@@ -120,7 +120,7 @@ export default {
         //console.log(this.contraseñaCrearUsuario)
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/registro",
+          "http://178.128.183.223:3333/api/v1/registro",
           {
             username: this.nombreUsuario,
             nombre: this.nombreCajero,
@@ -147,7 +147,7 @@ export default {
       //let id = this.$route.params.id;
       axios
         .get(
-          "https://127.0.0.1:3333/api/v1/administrador/vendedores"
+          "http://178.128.183.223:3333/api/v1/administrador/vendedores"
         )
         .then((response) => {
           this.response = response.data;
@@ -162,7 +162,7 @@ export default {
       this.loading = true
       axios
         .delete(
-          "https://127.0.0.1:3333/api/v1/administrador/vendedor/"+id,
+          "http://178.128.183.223:3333/api/v1/administrador/vendedor/"+id,
           {
             headers: {
               Authorization: "Bearer " + localStorage.token,
@@ -183,7 +183,7 @@ export default {
       this.loading = true
       axios
         .put(
-          "https://127.0.0.1:3333/api/v1/administrador/vendedor/"+id,
+          "http://178.128.183.223:3333/api/v1/administrador/vendedor/"+id,
           {
               username: username,
               password: this.nuevaContra

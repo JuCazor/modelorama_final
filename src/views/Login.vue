@@ -72,7 +72,7 @@ export default {
       if(this.$refs.form.validate()){
         this.loading = true;
         
-        axios.post('https://127.0.0.1:3333/api/v1/login',{
+        axios.post('http://178.128.183.223:3333/api/v1/login',{
           username: this.usuario,
           password: this.contra,
         })

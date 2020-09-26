@@ -778,7 +778,7 @@ export default {
       this.loading = true;
 
       axios
-        .get("https://127.0.0.1:3333/api/v1/vendedor/productos")
+        .get("http://178.128.183.223:3333/api/v1/vendedor/productos")
         .then((response) => {
           this.response = response.data;
           //console.log(response.data);
@@ -794,7 +794,7 @@ export default {
       this.loading = true;
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/productos",
+          "http://178.128.183.223:3333/api/v1/administrador/productos",
           {
             nombre: this.nombreProducto,
             precioCompra: this.precioCompra,
@@ -827,7 +827,7 @@ export default {
       this.loading = true;
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/productos",
+          "http://178.128.183.223:3333/api/v1/administrador/productos",
           {
             nombre: this.nombreCerveza[this.saberId()],
             precioCompra: this.precioCompra,
@@ -877,7 +877,7 @@ export default {
       //console.log("id:"+this.saberIdPromo()+"pe:"+this.productoElegido)
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/paquete",
+          "http://178.128.183.223:3333/api/v1/administrador/paquete",
           {
             id: this.saberIdPromo(),
             producto: this.productoElegido,
@@ -905,7 +905,7 @@ export default {
       //console.log(this.descuentoI)
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/paquete/multiple",
+          "http://178.128.183.223:3333/api/v1/administrador/paquete/multiple",
           {
             productos: JSON.stringify(this.productosOferta),
             descuento: this.descuentoI,
@@ -955,7 +955,7 @@ export default {
       //this.dateNow();
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/preventa",
+          "http://178.128.183.223:3333/api/v1/administrador/preventa",
           {
             //total: 10,
             //ora: this.hora,
@@ -990,7 +990,7 @@ export default {
       //console.log(this.ventaEspecial)
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/vender",
+          "http://178.128.183.223:3333/api/v1/administrador/vender",
           {
             //total: 10,
             hora: this.hora,
@@ -1030,7 +1030,7 @@ export default {
       this.response[n].nombre;
       axios
         .put(
-          "https://127.0.0.1:3333/api/v1/administrador/productos/" + id,
+          "http://178.128.183.223:3333/api/v1/administrador/productos/" + id,
           {
             nombre: this.response[n].nombre,
             precioCompra: this.response[n].precioCompra,
@@ -1064,7 +1064,7 @@ export default {
       this.dateNow();
       axios
         .post(
-          "https://127.0.0.1:3333/api/v1/administrador/corte",
+          "http://178.128.183.223:3333/api/v1/administrador/corte",
           {
             hora: this.hora,
             fecha: this.dia,
@@ -1096,7 +1096,7 @@ export default {
       this.dialog3 = true;
       axios
         .get(
-          "https://127.0.0.1:3333/api/v1/administrador/ventas/corte-actual"
+          "http://178.128.183.223:3333/api/v1/administrador/ventas/corte-actual"
         )
         .then((response) => {
           this.responseCaja = response.data[0];

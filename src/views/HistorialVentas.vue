@@ -107,7 +107,7 @@ export default {
       let id = this.$route.params.id;
       axios
         .get(
-          "https://127.0.0.1:3333/api/v1/administrador/ventas-corte/" +
+          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/" +
             id
         )
         .then((response) => {

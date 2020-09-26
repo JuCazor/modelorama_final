@@ -61,7 +61,7 @@ export default {
         
       axios
         .get(
-          "https://127.0.0.1:3333/api/v1/administrador/ventas-corte/pagina/"+id
+          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/pagina/"+id
         )
         .then((response) => {
           this.response = response.data.data
@@ -71,12 +71,12 @@ export default {
         .catch((e) => e);
     },
     realizarExcel(id){
-        //https://127.0.0.1:3333/api/v1/administrador/generar-hoja/1 responseType: 'blob'
+        //http://178.128.183.223:3333/api/v1/administrador/generar-hoja/1 responseType: 'blob'
                 this.descarga = true
                 let execlName = "Reporte" + '_' + id + '.xlsx';
                 ////console.log(execlName);
                 axios({
-                    url: "https://127.0.0.1:3333/api/v1/administrador/generar-hoja/"+id, // Interface name
+                    url: "http://178.128.183.223:3333/api/v1/administrador/generar-hoja/"+id, // Interface name
                     method: 'get',
                     responseType:"blob" 
                 }).then(function (response) {
@@ -100,7 +100,7 @@ export default {
     getVentaInicial() {
       axios
         .get(
-          "https://127.0.0.1:3333/api/v1/administrador/ventas-corte/pagina/1"
+          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/pagina/1"
         )
         .then((response) => {
           this.cantidadCortes = response.data.total    

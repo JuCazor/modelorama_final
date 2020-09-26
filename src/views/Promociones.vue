@@ -83,7 +83,7 @@ export default {
       //let id = this.$route.params.id;
       axios
         .get(
-          "https://127.0.0.1:3333/api/v1/administrador/paquetes"
+          "http://178.128.183.223:3333/api/v1/administrador/paquetes"
         )
         .then((response) => {
           this.response = response.data;
@@ -98,7 +98,7 @@ export default {
       this.loading = true
       axios
         .put(
-          "https://127.0.0.1:3333/api/v1/administrador/paquete/desactivar/"+id,
+          "http://178.128.183.223:3333/api/v1/administrador/paquete/desactivar/"+id,
           {
             headers: {
               Authorization: "Bearer " + localStorage.token,
@@ -117,7 +117,7 @@ export default {
       this.loading = true
       axios
         .put(
-          "https://127.0.0.1:3333/api/v1/administrador/paquete/desactivar/"+id,
+          "http://178.128.183.223:3333/api/v1/administrador/paquete/desactivar/"+id,
           {
             headers: {
               Authorization: "Bearer " + localStorage.token,
