@@ -3,7 +3,30 @@
     <v-row class="fill-height">
       
       <v-col cols="8" sm="8" md="8">
-        
+        <v-row>
+          <v-col cols="12" sm="12" md="12"> 
+        <v-card  >
+          <v-toolbar dark color="indigo darken-4" elevation="0" >Atajos:
+            <v-flex md11 class="d-flex flex-wrap">
+              <v-slide-group show-arrows>
+                <v-slide-item>
+                  <v-chip
+                    color="yellow darken-1"
+                    class="ml-6"
+                    text-color="indigo darken-4"
+                    tile dark
+                    @click="cerrarSesion()"
+                  >Cerrar sesión</v-chip>
+                </v-slide-item>
+                
+              </v-slide-group>
+              
+              
+            </v-flex>
+          </v-toolbar>
+        </v-card>
+      </v-col>
+        </v-row>
 
         <v-card height="600" class="elevation-12">
           
@@ -12,14 +35,20 @@
 
             <v-spacer />
 
-            
-                  <v-chip
-                    color="yellow lighten-1"
-                    class="ml-6"
-                    outlined
-                    @click="cerrarSesion()"
-                  >Cerrar sesión</v-chip>
-                
+            <v-text-field
+              height="20"
+              v-model="prodBuscar"
+              outlined
+              
+              label="Buscar"
+              type="text"
+              append-icon="mdi-magnify"
+              append-outer-icon="mdi-close"
+              @click:append="buscar()"
+              @click:append-outer="getProductos()"
+            >
+              
+            </v-text-field>
           </v-toolbar>
           
           <v-list two-line subheader>
@@ -31,8 +60,8 @@
             >
               <v-dialog max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-on="on" v-bind="attrs" outlined color="black">
-                    <v-icon color="black">mdi-pencil</v-icon>
+                  <v-btn v-on="on" v-bind="attrs" tile dark depressed class="rounded" color="lime darken-1">
+                    <v-icon >mdi-glass-mug-variant</v-icon>
                   </v-btn>
                 </template>
 
@@ -164,8 +193,8 @@
                     </v-btn>
                     <v-dialog max-width="400px">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-on="on" v-bind="attrs" outlined color="yellow lighten-1">
-                          <v-icon color="yellow lighten-1">mdi-plus</v-icon>Añadir a venta
+                        <v-btn v-on="on" v-bind="attrs" tile depressed dark color="yellow darken-1">
+                          <v-icon color="white">mdi-plus</v-icon>Añadir a venta
                         </v-btn>
                       </template>
 
@@ -174,7 +203,7 @@
                         <div class>
                           <v-flex md12 lg12 class="d-flex flex-warp justify-center">
                             <v-flex md2>
-                              <v-btn @click="cantidad--">-</v-btn>
+                              <v-btn color="yellow darken-1" dark @click="cantidad--">-</v-btn>
                             </v-flex>
                             <v-flex md6>
                               <v-form>
@@ -188,14 +217,14 @@
                               </v-form>
                             </v-flex>
                             <v-flex md2>
-                              <v-btn @click="cantidad++">+</v-btn>
+                              <v-btn class="ml-1" color="yellow darken-1" dark @click="cantidad++">+</v-btn>
                             </v-flex>
                           </v-flex>
                         </div>
                         <v-card-actions>
-                          <v-btn outlined>cancelar</v-btn>
+                          <v-btn color="yellow darken-4" outlined>cancelar</v-btn>
                           <v-spacer></v-spacer>
-                          <v-btn @click="añadirAVenta(index,cantidad)">Añadir producto</v-btn>
+                          <v-btn color="indigo darken-4" dark @click="añadirAVenta(index,cantidad)">Añadir producto</v-btn>
                         </v-card-actions>
                       </v-card>
                       <div class="text-center ma-2">
@@ -211,7 +240,7 @@
               </v-list-item-action>
             </v-list-item>
 
-            <v-divider inset></v-divider>
+            <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
           </v-list>
         </v-card>
         
@@ -222,7 +251,7 @@
             <v-toolbar color="indigo darken-4"  dark elevation="0">
               <v-spacer />
               <div class="h1" style="font-size: 28px !important;">
-                  Carrito
+                  <v-icon>mdi-cart</v-icon> carrito
               </div>
             <v-spacer />
             
@@ -231,7 +260,7 @@
               <v-list-item v-for="(item, i) in itemsDeVenta" :key="i" :inactive="true">
                 <v-list-item-content>
                   <v-list-item-title v-text="item[0]"></v-list-item-title>
-                  <v-list-item-subtitle v-text="item[3]"></v-list-item-subtitle>
+                   <v-list-item-subtitle v-text='"cantidad:"+item[2]'></v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-btn color="orange darken-1" outlined @click="eliminarCarrito(i)">
@@ -239,8 +268,20 @@
                   </v-btn>
                 </v-list-item-action>
               </v-list-item>
+              <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
             </v-list-item-group>
           </v-list>
+          <v-row v-if="ventaEspecial">
+            <v-flex md12 sm12 lg12>
+              <v-text-field style="width: 80%; margin-left: 10%" v-model="nombreComprador" label="Nombre del cliente"></v-text-field> 
+            </v-flex>
+            
+          </v-row>
+          <v-row style="margin-left: 37%; width: 26%" v-if="!verCarrito">
+            <v-flex md12 lg12 sm12>
+              <v-checkbox color="#FFAD5C" v-model="ventaEspecial" class="mx-2" label="Venta especial"></v-checkbox>
+            </v-flex>
+          </v-row>
           <v-row>
             <v-spacer></v-spacer>
             <v-btn
@@ -249,7 +290,7 @@
               elevation="0"
               :disabled="verCarrito"
               dark
-              color="yellow lighten-1"
+              color="yellow darken-1"
               
             >
               <v-icon color="white">mdi-currency-usd</v-icon>vender
@@ -297,12 +338,67 @@
         </v-card>
       </v-skeleton-loader>
     </v-dialog>
-    <!--- Dialogo añadir cajero--->
+    <!--- Dialogo preventa--->
     
+      <v-dialog v-model="dialogPreventa" max-width="300px">
+          <v-card color="white">
+            <v-toolbar color="indigo darken-4"  dark elevation="0">
+              <v-spacer />
+              <div class="h1" style="font-size: 28px !important;">
+                  Complete la compra
+              </div>
+              <v-spacer />
+            </v-toolbar>
+            <v-card-text>
+              <v-row>
+                <v-col cols="12" md="12" sm="12">
+                  <v-list :dense="true" :nav="true">
+                    <v-list-item-group color="primary">
+                      <v-list-item v-for="(item, i) in responsePreventa.productos" :key="i" :inactive="true">
+                        <v-list-item-content>
+                          
+                          <v-list-item-title class="text-center" v-text='item[0]+" X"+(item[3]/item[4])'></v-list-item-title>
+                          <v-list-item-subtitle class="text-center" v-text='"$"+item[3]'></v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      
+                    </v-list-item-group>
+                    
+                  </v-list>
+                </v-col>
+                <v-col cols="12" md="12" sm="12" >
+                  <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
+                    <h4  style="float: left; ">
+                      Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
+                    </h4>
+                    
+                  </v-row>
+                  <v-row style="width: 36%; margin-left: 32%" v-else>
+                    <h4 style="float: left; ">
+                      Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
+                    </h4>
+                  </v-row>
+                  
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-row>
+                    <v-toolbar elevation="0">
+                      <v-spacer />
+                      <v-btn color="yellow darken-1" @click="terminarVenta()" depressed tile dark>Terminar venta</v-btn>
+                      <v-spacer />
+                    </v-toolbar>
+                  </v-row>
+              
+            </v-card-actions>
+          </v-card>
+      </v-dialog>
+
     <!---   Dialogo promo   ---->
     <v-dialog v-model="dialogPromo" max-width="700px">
       <v-card>
-        <v-toolbar color="blue accent-2" dark elevation="0">
+        <v-toolbar color="indigo darken-4" dark elevation="0">
           <v-spacer />
           <div class="h1" style="font-size: 28px !important;">Promociones</div>
           <v-spacer />
@@ -310,10 +406,10 @@
         <div style>
           <v-tabs vertical>
             <v-tab>
-              <v-icon left>mdi-account</v-icon>Individuales
+              <v-icon color="indigo darken-4" left>mdi-brightness-percent</v-icon>Individuales
             </v-tab>
             <v-tab>
-              <v-icon left>mdi-lock</v-icon>Combinadas
+              <v-icon color="indigo darken-4" left>mdi-animation</v-icon>Combinadas
             </v-tab>
             <v-tab-item>
               <v-card flat>
@@ -333,7 +429,7 @@
                       <v-text-field v-model="descuentoI" label="descuento en pesos"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-btn @click="añadirPromoUno()" outlined  color="yellow lighten-1">
+                  <v-btn @click="añadirPromoUno()" dark tile depressed  color="yellow darken-1">
                     añadir a promoción
                   </v-btn>
                 </v-card-text>
@@ -375,14 +471,14 @@
                   <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                      <v-btn color="yellow lighten-1" outlined @click="addPaquete()">añadir al paquete</v-btn>
+                      <v-btn color="yellow lighten-1" block dark tile depressed @click="addPaquete()">añadir al paquete</v-btn>
                       <v-spacer />
                     </v-toolbar>
                   </v-row>
                   <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                        <v-text-field v-model="descuentoI" label="descuento en pesos"></v-text-field>
+                        <v-text-field class="mt-3" v-model="descuentoI" label="descuento en pesos"></v-text-field>
                       <v-btn color="primary" @click="añadirPromoDos()" outlined class="ml-6">añadir paquete a promoción</v-btn>
                       <v-spacer />
                     </v-toolbar>
@@ -422,6 +518,7 @@ export default {
       snackbar: false,
       message: "",
       response: "",
+      presi: '',
       responseCaja: "",
       cantidad: 1,
       texto: "",
@@ -440,26 +537,34 @@ export default {
       codigoBarra: '',
       cerveza: false,
       nombreCerveza: [
-        "Bote Modelo",
-        "Laton Victoria",
-        "Media retornable Corona",
-        "Mega pacifico",
-        "Familiar michelob",
-        "Cuarto stella",
-        "Modelo 710",
+        "Modelo",
+        "Victoria",
+        "Corona",
+        "Pacifico",
+        "Michelob",
+        "Stella",
         "Barrilito",
-        "Stella botella",
+      ],
+      presentaciones: [
+        "Bote",
+        "Laton",
+        "Media retornable",
+        "Mega",
+        "Familiar",
+        "Cuarto",
+        "Modelo 710",
+        "Botella",
       ],
       descripcionCerveza: [
-        "Bote Modelo 355ml",
-        "Laton Victoria 473ml",
-        "Media retornable Corona 355ml",
-        "Mega pacifico 1200ml",
-        "Familiar michelob 940ml",
-        "Cuarto stella 250ml",
-        "Modelo 710ml",
-        "Barrilito 325ml",
-        "Stella botella 330ml",
+        "355ml",
+        "473ml",
+        "355ml",
+        "1200ml",
+        "940ml",
+        "250ml",
+        "710ml",
+        "325ml",
+        "330ml",
       ],
       nomCerveza: '',
       desCerveza: '',
@@ -470,9 +575,32 @@ export default {
       productosOferta: [],
       nombresProductos: [],
       idsNombresProductos: [],
+      ventaEspecial: false,
+      responsePreventa: [],
+      dialogPreventa: false,
+      totalPreventa: 0,
+      nombreComprador: '',
+      otro: false,
+      descri: '',
+      prodBuscar: '',
     };
   },
   methods: {
+    buscar(){
+      
+
+      axios
+        .post("https://modelorama-back.herokuapp.com/api/v1/vendedor/productos/busqueda/nombre",
+        {
+          nombre: this.prodBuscar
+        })
+        .then((response) => {
+          this.response = response.data;
+          //console.log(response.data);
+          
+        })
+        .catch((e) => e);
+    },
     addPaquete() {
       if (this.comprobarValor2()) {
         var nombre = this.productoElegido;
@@ -554,10 +682,10 @@ export default {
         .post(
           "http://178.128.183.223:3333/api/v1/administrador/productos",
           {
-            nombre: this.nombreCerveza[this.saberId()],
+            nombre: this.nomCerveza+" "+this.presi+" "+this.descri,
             precioCompra: this.precioCompra,
             precioVenta: this.precioVenta,
-            descripcion: this.descripcionCerveza[this.saberId()],
+            descripcion: this.nomCerveza+" "+this.presi+" "+this.descri,
             cantidadExistente: this. stock,
             cantidadAlerta: this.stockAlerta,
             codigo: this.codigoBarra,
@@ -664,6 +792,7 @@ export default {
         item.push(this.response[index].id);
         item.push(cantidad);
         item.push(total);
+        item.push(this.response[index].precioVenta);
         this.itemsDeVenta.push(item);
         this.cantidad = 0;
       }
@@ -676,14 +805,14 @@ export default {
       return false;
     },
     vender() {
-      this.dateNow();
+      //this.dateNow();
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/vendedor/vender",
+          "http://178.128.183.223:3333/api/v1/administrador/preventa",
           {
-            total: 10,
-            hora: this.hora,
-            fecha: this.dia,
+            //total: 10,
+            //ora: this.hora,
+            //fecha: this.dia,
             productos: JSON.stringify(this.itemsDeVenta),
           },
           {
@@ -693,10 +822,59 @@ export default {
           }
         )
         .then((response) => {
-          response;
-          this.getProductos();
-          this.texto = "Vendido correctamente";
+          this.responsePreventa = response.data;
+          //console.log(response)
+          this.dialogPreventa = true; 
+          response.data.productos.forEach(element =>{
+            //console.log("elemento: "+element[3])
+            this.totalPreventa = (
+              parseFloat(this.totalPreventa) + parseFloat(element[3])
+            ).toFixed(2); 
+          })
+          //this.texto = "Vendido correctamente";
+          //this.snackbar = true;
+        })
+        .catch((e) => e);
+    },
+    terminarVenta() {
+      this.dateNow();
+      //console.log(this.itemsDeVenta[0])
+      //console.log(this.responsePreventa.promocionesAplicables)
+      //console.log(this.ventaEspecial)
+      axios
+        .post(
+          "http://178.128.183.223:3333/api/v1/administrador/vender",
+          {
+            //total: 10,
+            hora: this.hora,
+            fecha: this.dia,
+            productos: this.responsePreventa.productos,
+            promocionesAplicables: this.responsePreventa.promocionesAplicables,
+            ventaExtraordinaria: this.ventaEspecial,
+            nombreComprador: this.nombreComprador,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
+        .then((response) => {
+          response
+          //this.responsePreventa = response.data;
+          //console.log("asdadad")
+          console.log(response)
+          this.dialogPreventa = false; 
+          this.totalPreventa = 0
+          this.nombreComprador = ''
+          this.texto = "Venta terminada";
           this.snackbar = true;
+          this.getProductos();
+          for (let index = 0; index < this.itemsDeVenta.length; index++) {
+            this.eliminarCarrito(index);
+            
+          }
+          this.itemsDeVenta = []
         })
         .catch((e) => e);
     },
@@ -711,9 +889,9 @@ export default {
             precioCompra: this.response[n].precioCompra,
             precioVenta: this.response[n].precioVenta,
             descripcion: this.response[n].descripcion,
-            cantidadExistente: this.response[n].stock,
-            cantidadAlerta: this.response[n].stockAlerta,
-            codigo: this.response[n].codigoBarra,
+            cantidadExistente: this.response[n].cantidadExistente,
+            cantidadAlerta: this.response[n].cantidadAlerta,
+            codigo: this.response[n].codigo,
           },
           {
             headers: {
@@ -722,8 +900,8 @@ export default {
           }
         )
         .then((response) => {
+          response
           this.loading = false;
-          this.response = response.data;
           this.enable = true;
           this.texto = "Editado correctamente";
           this.snackbar = true;
@@ -742,7 +920,7 @@ export default {
           "http://178.128.183.223:3333/api/v1/administrador/corte",
           {
             hora: this.hora,
-            fecha: this.fecha,
+            fecha: this.dia,
           },
           {
             headers: {

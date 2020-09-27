@@ -14,7 +14,7 @@
         <v-flex xs6 sd4 md3>
           <v-dialog v-model="contraMostrar" max-width="600px">
                 <template color="yellow lighten-1" v-slot:activator="{ on, attrs }">
-                  <v-btn outlined color="yellow lighten-1" v-on="on" v-bind="attrs">
+                  <v-btn depressed dark tile color="yellow darken-1" v-on="on" v-bind="attrs">
                     Cambiar contraseña
                   </v-btn>
                 </template>
@@ -44,7 +44,7 @@
               </v-dialog>
         </v-flex>
         <v-flex md3  xs6 >
-            <v-btn outlined :loading="loading" @click="desactivar(item.id, item.username)" color="orange lighten-2" class="ml-5">
+            <v-btn depressed dark tile :loading="loading" @click="desactivar(item.id, item.username)" color="orange lighten-2" class="ml-5">
                 Dar de baja
             </v-btn>
         </v-flex>
