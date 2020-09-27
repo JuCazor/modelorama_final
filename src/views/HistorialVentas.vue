@@ -89,7 +89,7 @@
             </v-responsive>
         </v-flex>
       </v-layout>
-      <v-divider></v-divider>
+      <v-divider color="indigo darken-4" style=" width: 100%"></v-divider>
     </v-card>
   </v-container>
 </template>
@@ -113,7 +113,7 @@ export default {
         .then((response) => {
           this.response = response.data;
           this.ventas = response.data.ventas;
-          //console.log(this.ventas);
+          console.log(response);
         })
         .catch((e) => e);
     },

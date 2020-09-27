@@ -29,7 +29,7 @@
           <div>{{todo.total}}</div>
         </v-flex>
         <v-flex xs6 sm6 md4>
-          <v-btn color="yellow darken-1" outlined :to='"/ventas/historial/"+todo.id'>
+          <v-btn color="yellow darken-1" tile depressed dark :to='"/ventas/historial/"+todo.id'>
           <v-icon>mdi-magnify-plus</v-icon>
               Detalles
           </v-btn>

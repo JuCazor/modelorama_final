@@ -7,37 +7,38 @@
           <v-col cols="12" sm="12" md="12"> 
         <v-card  >
           <v-toolbar dark color="indigo darken-4" elevation="0" >Atajos:
-            <v-flex class="d-flex flex-wrap">
-              <v-slide-group>
+            <v-flex md11 class="d-flex flex-wrap">
+              <v-slide-group show-arrows>
                 <v-slide-item>
                   <v-chip
-                    color="yellow lighten-1"
+                    color="yellow darken-1"
                     class="ml-6"
-                    outlined
+                    text-color="indigo darken-4"
+                    tile dark
                     @click="cerrarSesion()"
                   >Cerrar sesión</v-chip>
                 </v-slide-item>
                 <v-slide-item>
                   <v-chip
-                    color="yellow lighten-1"
-                    
-                    outlined
+                    color="yellow darken-1"
+                    text-color="indigo darken-4"
+                    tile dark
                     @click="dialog2 = true"
                   >Realizar corte de caja</v-chip>
                 </v-slide-item>
                 <v-slide-item>
-                  <v-chip outlined color="yellow lighten-1" to="/ventas/historial/corte">Historial ventas</v-chip>
+                  <v-chip tile dark text-color="indigo darken-4" text color="yellow darken-1" to="/ventas/historial/corte">Historial ventas</v-chip>
                 </v-slide-item>
                 <v-slide-item>
-                    <v-chip outlined color="yellow lighten-1" to="/promociones">Ver las promociones</v-chip>
+                    <v-chip tile dark text-color="indigo darken-4" color="yellow darken-1" to="/promociones">Ver las promociones</v-chip>
                 </v-slide-item>
                 <v-slide-item>
-                  <v-chip color="yellow lighten-1" outlined @click="dialogPromo = true">Promociones</v-chip>
+                  <v-chip text-color="indigo darken-4" color="yellow darken-1" tile dark @click="dialogPromo = true">Añadir promociones <v-icon>mdi-plus</v-icon> </v-chip>
                 </v-slide-item>
                 <v-slide-item>
                   <v-dialog max-width="600px">
-                <template color="yellow lighten-1" v-slot:activator="{ on, attrs }">
-                  <v-chip height="50" outlined color="yellow lighten-1" v-on="on" v-bind="attrs">
+                <template color="yellow darken-1" v-slot:activator="{ on, attrs }">
+                  <v-chip height="50" tile text-color="indigo darken-4" dark color="yellow darken-1" v-on="on" v-bind="attrs">
                     Añadir producto
                     <v-icon>mdi-plus</v-icon>
                   </v-chip>
@@ -63,9 +64,30 @@
                       dense
                       filled
                     ></v-text-field>
-                    <v-col v-else class="selects" cols="12" sm="12">
-                      <v-select :items="nombreCerveza" v-model="nomCerveza" label="Nombre"></v-select>
+                    <v-col class="selects" cols="12" sm="12" v-else>
+                      <v-row  align="center" justify="center" class="flex-warp">
+                        <v-col cols="12" md="4" sm="4">
+                          <v-select :items="nombreCerveza" v-model="nomCerveza" label="Marca"></v-select>
+                        </v-col>
+                        <v-col cols="12" md="4" sm="4">
+                          <v-select :items="presentaciones" v-model="presi" label="Presentaciones"></v-select>
+                        </v-col>
+                        <v-col style="margin-top: -13%" cols="12" md="4" sm="4">
+                          <v-checkbox color="#FFAD5C" v-model="otro" class="mx-2" label="otro"></v-checkbox>
+                          <v-select v-if="!otro" :items="descripcionCerveza" v-model="descri" label="Volumen"></v-select>
+                          <v-text-field
+                            label="ml"
+                            class="rounded-lg"
+                            v-model="descri"
+                            :rules="inputRules"
+                            v-else
+                            dense
+                            filled
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
                     </v-col>
+                    
                     <v-flex md12 lg12 class="d-flex flex-warp">
                       <v-flex
                         md6
@@ -107,24 +129,7 @@
                       dense
                       filled
                     ></v-text-field>
-                    <v-flex v-if="cerveza" style="margin-left: 28%" md12 lg12 sm12>
-                      <v-checkbox  color="#FFAD5C" v-model="otro" class="mx-2" :label='otro ? "Escoger descripción" : "Otra descripción "'></v-checkbox>
-                    </v-flex>
-                    <v-col v-if="!otro && cerveza" class="selects" cols="12" sm="12">
-                      <v-select :items="descripcionCerveza" v-model="desCerveza" label="Descripcion"></v-select>
                     
-                    </v-col>
-                    <v-col cols="12" v-if="otro">
-                      <v-text-field
-                        label="Descripción"
-                        class="rounded-lg"
-                        v-model="descripcion"
-                        :rules="inputRules"
-                        dense
-                        filled
-                      ></v-text-field>
-                      
-                    </v-col>
                     <v-flex md12 lg12 class="d-flex flex-warp">
                       <v-flex
                         md6
@@ -194,7 +199,8 @@
               </v-dialog>
                 </v-slide-item>
                 <v-slide-item>
-                  <v-chip color="yellow lighten-1" outlined to="/cajeros">Añadir cajero</v-chip>
+                  <v-chip text-color="indigo darken-4"   color="yellow darken-1" tile dark to="/cajeros">
+                   Añadir cajero<v-icon>mdi-plus</v-icon></v-chip>
                 </v-slide-item>
               </v-slide-group>
               
@@ -212,26 +218,20 @@
 
             <v-spacer />
 
-     <!---       <v-text-field
+            <v-text-field
               height="20"
-              v-model="message"
+              v-model="prodBuscar"
               outlined
-              clearable
+              
               label="Buscar"
               type="text"
+              append-icon="mdi-magnify"
+              append-outer-icon="mdi-close"
+              @click:append="buscar()"
+              @click:append-outer="getProductos()"
             >
-              <template v-slot:prepend>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  Introduzca el nombre o codigo del producto que busca
-                </v-tooltip>
-              </template>
-              <template v-slot:append>
-                <v-icon>mdi-magnify</v-icon>
-              </template>
-            </v-text-field> ---->
+              
+            </v-text-field>
           </v-toolbar>
           
           <v-list two-line subheader>
@@ -243,8 +243,8 @@
             >
               <v-dialog max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-on="on" v-bind="attrs" outlined color="black">
-                    <v-icon color="black">mdi-pencil</v-icon>
+                  <v-btn v-on="on" v-bind="attrs" tile dark depressed class="rounded" color="lime darken-1">
+                    <v-icon >mdi-glass-mug-variant</v-icon>
                   </v-btn>
                 </template>
 
@@ -376,8 +376,8 @@
                     </v-btn>
                     <v-dialog max-width="400px">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-on="on" v-bind="attrs" outlined color="yellow darken-1">
-                          <v-icon color="yellow darken-2">mdi-plus</v-icon>Añadir a venta
+                        <v-btn v-on="on" v-bind="attrs" tile depressed dark color="yellow darken-1">
+                          <v-icon color="white">mdi-plus</v-icon>Añadir a venta
                         </v-btn>
                       </template>
 
@@ -423,7 +423,7 @@
               </v-list-item-action>
             </v-list-item>
 
-            <v-divider inset></v-divider>
+            <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
           </v-list>
         </v-card>
         
@@ -434,7 +434,7 @@
             <v-toolbar color="indigo darken-4"  dark elevation="0">
               <v-spacer />
               <div class="h1" style="font-size: 28px !important;">
-                  Carrito
+                  <v-icon>mdi-cart</v-icon> carrito
               </div>
             <v-spacer />
             
@@ -451,18 +451,19 @@
                   </v-btn>
                 </v-list-item-action>
               </v-list-item>
+              <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
             </v-list-item-group>
           </v-list>
-          <v-row v-if="!verCarrito">
+          <v-row v-if="ventaEspecial">
             <v-flex md12 sm12 lg12>
               <v-text-field style="width: 80%; margin-left: 10%" v-model="nombreComprador" label="Nombre del cliente"></v-text-field> 
             </v-flex>
             
           </v-row>
-          <v-row v-if="!verCarrito">
-            <v-flex  style="margin-left: 32%" md12 lg12 sm12>
-                    <v-checkbox color="#FFAD5C" v-model="ventaEspecial" class="mx-2" label="Venta especial"></v-checkbox>
-                  </v-flex>
+          <v-row style="margin-left: 37%; width: 26%" v-if="!verCarrito">
+            <v-flex md12 lg12 sm12>
+              <v-checkbox color="#FFAD5C" v-model="ventaEspecial" class="mx-2" label="Venta especial"></v-checkbox>
+            </v-flex>
           </v-row>
           <v-row>
             <v-spacer></v-spacer>
@@ -472,7 +473,7 @@
               elevation="0"
               :disabled="verCarrito"
               dark
-              color="yellow lighten-1"
+              color="yellow darken-1"
               
             >
               <v-icon color="white">mdi-currency-usd</v-icon>vender
@@ -527,7 +528,7 @@
             <v-toolbar color="indigo darken-4"  dark elevation="0">
               <v-spacer />
               <div class="h1" style="font-size: 28px !important;">
-                  Finalice su compra
+                  Complete la compra
               </div>
               <v-spacer />
             </v-toolbar>
@@ -539,8 +540,8 @@
                       <v-list-item v-for="(item, i) in responsePreventa.productos" :key="i" :inactive="true">
                         <v-list-item-content>
                           
-                          <v-list-item-title v-text='item[0]+" X"+(item[3]/item[4])'></v-list-item-title>
-                          <v-list-item-subtitle v-text='"$"+item[3]'></v-list-item-subtitle>
+                          <v-list-item-title class="text-center" v-text='item[0]+" X"+(item[3]/item[4])'></v-list-item-title>
+                          <v-list-item-subtitle class="text-center" v-text='"$"+item[3]'></v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       
@@ -548,10 +549,19 @@
                     
                   </v-list>
                 </v-col>
-                <v-col cols="12" md="12" sm="12">
-                  <h4 style="float: left;">
-                    Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
-                  </h4>
+                <v-col cols="12" md="12" sm="12" >
+                  <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
+                    <h4  style="float: left; ">
+                      Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
+                    </h4>
+                    
+                  </v-row>
+                  <v-row style="width: 36%; margin-left: 32%" v-else>
+                    <h4 style="float: left; ">
+                      Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
+                    </h4>
+                  </v-row>
+                  
                 </v-col>
               </v-row>
             </v-card-text>
@@ -559,7 +569,7 @@
               <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                      <v-btn color="yellow darken-1" @click="terminarVenta()" outlined>Terminar venta</v-btn>
+                      <v-btn color="yellow darken-1" @click="terminarVenta()" depressed tile dark>Terminar venta</v-btn>
                       <v-spacer />
                     </v-toolbar>
                   </v-row>
@@ -602,7 +612,7 @@
                       <v-text-field v-model="descuentoI" label="descuento en pesos"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-btn @click="añadirPromoUno()" outlined  color="yellow lighten-1">
+                  <v-btn @click="añadirPromoUno()" dark tile depressed  color="yellow darken-1">
                     añadir a promoción
                   </v-btn>
                 </v-card-text>
@@ -644,14 +654,14 @@
                   <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                      <v-btn color="yellow lighten-1" outlined @click="addPaquete()">añadir al paquete</v-btn>
+                      <v-btn color="yellow lighten-1" block dark tile depressed @click="addPaquete()">añadir al paquete</v-btn>
                       <v-spacer />
                     </v-toolbar>
                   </v-row>
                   <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                        <v-text-field v-model="descuentoI" label="descuento en pesos"></v-text-field>
+                        <v-text-field class="mt-3" v-model="descuentoI" label="descuento en pesos"></v-text-field>
                       <v-btn color="primary" @click="añadirPromoDos()" outlined class="ml-6">añadir paquete a promoción</v-btn>
                       <v-spacer />
                     </v-toolbar>
@@ -691,6 +701,7 @@ export default {
       snackbar: false,
       message: "",
       response: "",
+      presi: '',
       responseCaja: "",
       cantidad: 1,
       texto: "",
@@ -709,26 +720,34 @@ export default {
       codigoBarra: '',
       cerveza: false,
       nombreCerveza: [
-        "Bote Modelo",
-        "Laton Victoria",
-        "Media retornable Corona",
-        "Mega pacifico",
-        "Familiar michelob",
-        "Cuarto stella",
-        "Modelo 710",
+        "Modelo",
+        "Victoria",
+        "Corona",
+        "Pacifico",
+        "Michelob",
+        "Stella",
         "Barrilito",
-        "Stella botella",
+      ],
+      presentaciones: [
+        "Bote",
+        "Laton",
+        "Media retornable",
+        "Mega",
+        "Familiar",
+        "Cuarto",
+        "Modelo 710",
+        "Botella",
       ],
       descripcionCerveza: [
-        "Bote Modelo 355ml",
-        "Laton Victoria 473ml",
-        "Media retornable Corona 355ml",
-        "Mega pacifico 1200ml",
-        "Familiar michelob 940ml",
-        "Cuarto stella 250ml",
-        "Modelo 710ml",
-        "Barrilito 325ml",
-        "Stella botella 330ml",
+        "355ml",
+        "473ml",
+        "355ml",
+        "1200ml",
+        "940ml",
+        "250ml",
+        "710ml",
+        "325ml",
+        "330ml",
       ],
       nomCerveza: '',
       desCerveza: '',
@@ -745,9 +764,26 @@ export default {
       totalPreventa: 0,
       nombreComprador: '',
       otro: false,
+      descri: '',
+      prodBuscar: '',
     };
   },
   methods: {
+    buscar(){
+      
+
+      axios
+        .post("https://modelorama-back.herokuapp.com/api/v1/vendedor/productos/busqueda/nombre",
+        {
+          nombre: this.prodBuscar
+        })
+        .then((response) => {
+          this.response = response.data;
+          //console.log(response.data);
+          
+        })
+        .catch((e) => e);
+    },
     addPaquete() {
       if (this.comprobarValor2()) {
         var nombre = this.productoElegido;
@@ -829,10 +865,10 @@ export default {
         .post(
           "http://178.128.183.223:3333/api/v1/administrador/productos",
           {
-            nombre: this.nombreCerveza[this.saberId()],
+            nombre: this.nomCerveza+" "+this.presi+" "+this.descri,
             precioCompra: this.precioCompra,
             precioVenta: this.precioVenta,
-            descripcion: this.descripcionCerveza[this.saberId()],
+            descripcion: this.nomCerveza+" "+this.presi+" "+this.descri,
             cantidadExistente: this. stock,
             cantidadAlerta: this.stockAlerta,
             codigo: this.codigoBarra,
@@ -1010,7 +1046,7 @@ export default {
           response
           //this.responsePreventa = response.data;
           //console.log("asdadad")
-          //console.log(response)
+          console.log(response)
           this.dialogPreventa = false; 
           this.totalPreventa = 0
           this.nombreComprador = ''
