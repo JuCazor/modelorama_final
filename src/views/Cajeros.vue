@@ -59,22 +59,25 @@
             <v-spacer />
           </v-toolbar>
           <v-card-text>
-            <v-row  align="center" justify="center">
-              <v-col cols="8">
-                  <v-text-field v-model="nombreCajero" label="Nombre del cajero">
+            <v-row   align="center" justify="center">
+              <v-form ref="form">
+                <v-col cols="8">
+                    <v-text-field v-model="nombreCajero" label="Nombre del cajero">
 
-                  </v-text-field>
-              </v-col>
-              <v-col cols="8">
-                  <v-text-field v-model="nombreUsuario" label="Nombre de usuario">
+                    </v-text-field>
+                </v-col>
+                <v-col cols="8">
+                    <v-text-field v-model="nombreUsuario" label="Nombre de usuario">
 
-                  </v-text-field>
-              </v-col>
-              <v-col cols="8">
-                  <v-text-field  v-model="contraseñaCrearUsuario" label="Contraseña">
+                    </v-text-field>
+                </v-col>
+                <v-col cols="8">
+                    <v-text-field  v-model="contraseñaCrearUsuario" label="Contraseña">
 
-                  </v-text-field>
-              </v-col>
+                    </v-text-field>
+                </v-col>
+              </v-form>
+              
             </v-row>
           </v-card-text>
           <v-card-actions>
@@ -117,33 +120,36 @@ export default {
     añadirCajero() {
         //console.log(this.nombreCajero)
         //comentario fantasma
-        
+
         //console.log(this.nombreUsuario)
         //console.log(this.contraseñaCrearUsuario)
-      axios
-        .post(
-          "http://178.128.183.223:3333/api/v1/registro",
-          {
-            username: this.nombreUsuario,
-            nombre: this.nombreCajero,
-            password: this.contraseñaCrearUsuario
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.token,
-            },
-          }
-        )
-        .then((response) => {
-          response
-          this.loading = false;
-          //console.log(response.data);
-          this.dialogUsuarios = false
-          this.texto = "Añadido correctamente";
-          this.snackbar = true;
-          this.getCajeros()
-        })
-        .catch((e) => e);
+      if(this.$refs.form.validate()){ 
+        axios
+                .post(
+                  "http://178.128.183.223:3333/api/v1/registro",
+                  {
+                    username: this.nombreUsuario,
+                    nombre: this.nombreCajero,
+                    password: this.contraseñaCrearUsuario
+                  },
+                  {
+                    headers: {
+                      Authorization: "Bearer " + localStorage.token,
+                    },
+                  }
+                )
+                .then((response) => {
+                  response
+                  this.loading = false;
+                  //console.log(response.data);
+                  this.dialogUsuarios = false
+                  this.texto = "Añadido correctamente";
+                  this.snackbar = true;
+                  this.getCajeros()
+                })
+                .catch((e) => e);
+      }
+      
     },
     getCajeros() {
       //let id = this.$route.params.id;
