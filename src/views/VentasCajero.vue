@@ -819,9 +819,15 @@ export default {
     eliminarCarrito(i) {
       this.itemsDeVenta.pop(i);
     },
-    comprobarValor() {
-      if (this.cantidad >= 1) return true;
-      return false;
+    comprobarValor(index) {
+      if (this.cantidad >= 1 && this.cantidad <= this.response[index].cantidadExistente  ){
+        return true;
+      }else{
+        this.texto = "La cantidad debe ser igual o menor a la cantidad de existencia";
+        this.snackbar = true;
+        return false;
+      }
+      
     },
     vender() {
       //this.dateNow();

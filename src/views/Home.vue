@@ -374,7 +374,7 @@
                     <v-btn v-show="false" icon v-bind="attrs" v-on="on" @click="añadirAVenta()">
                       <v-icon color="grey lighten-1">mdi-plus</v-icon>
                     </v-btn>
-                    <v-dialog max-width="400px">
+                    <v-dialog v-model="addaVenta" max-width="400px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn v-on="on" v-bind="attrs" tile depressed dark color="yellow darken-1">
                           <v-icon color="white">mdi-plus</v-icon>Añadir a venta
@@ -405,7 +405,7 @@
                           </v-flex>
                         </div>
                         <v-card-actions>
-                          <v-btn color="yellow darken-4" outlined>cancelar</v-btn>
+                          <v-btn color="yellow darken-4" @click="addaVenta = false" outlined>cancelar</v-btn>
                           <v-spacer></v-spacer>
                           <v-btn color="indigo darken-4" dark @click="añadirAVenta(index,cantidad)">Añadir producto</v-btn>
                         </v-card-actions>
@@ -766,6 +766,7 @@ export default {
       otro: false,
       descri: '',
       prodBuscar: '',
+      addaVenta: false,
     };
   },
   methods: {
@@ -983,7 +984,7 @@ export default {
     comprobar() {},
     algo() {},
     añadirAVenta(index, cantidad) {
-      if (this.comprobarValor()) {
+      if (this.comprobarValor(index)) {
         var nombre = this.response[index].nombre;
         var total = (
           parseFloat(this.response[index].precioVenta) * parseFloat(cantidad)
@@ -1001,9 +1002,15 @@ export default {
     eliminarCarrito(i) {
       this.itemsDeVenta.pop(i);
     },
-    comprobarValor() {
-      if (this.cantidad >= 1) return true;
-      return false;
+    comprobarValor(index) {
+      if (this.cantidad >= 1 && this.cantidad <= this.response[index].cantidadExistente  ){
+        return true;
+      }else{
+        this.texto = "La cantidad debe ser igual o menor a la cantidad de existencia";
+        this.snackbar = true;
+        return false;
+      }
+      
     },
     vender() {
       //this.dateNow();

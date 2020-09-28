@@ -82,7 +82,9 @@ export default {
                 axios({
                     url: "http://178.128.183.223:3333/api/v1/administrador/generar-hoja/"+id, // Interface name
                     method: 'get',
-                    headers: 'Bearer' + localStorage.token,
+                    headers: {
+                      Authorization: 'Bearer' + localStorage.token
+                      },
                     responseType:"blob" 
                 }).then(function (response) {
                     const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
