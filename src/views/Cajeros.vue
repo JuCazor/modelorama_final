@@ -116,6 +116,8 @@ export default {
   methods: {
     añadirCajero() {
         //console.log(this.nombreCajero)
+        //comentario fantasma
+        
         //console.log(this.nombreUsuario)
         //console.log(this.contraseñaCrearUsuario)
       axios
