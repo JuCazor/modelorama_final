@@ -147,7 +147,11 @@ export default {
       //let id = this.$route.params.id;
       axios
         .get(
-          "http://178.128.183.223:3333/api/v1/administrador/vendedores"
+          "http://178.128.183.223:3333/api/v1/administrador/vendedores"{
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
         )
         .then((response) => {
           this.response = response.data;

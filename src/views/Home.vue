@@ -1143,7 +1143,11 @@ export default {
       this.dialog3 = true;
       axios
         .get(
-          "http://178.128.183.223:3333/api/v1/administrador/ventas/corte-actual"
+          "http://178.128.183.223:3333/api/v1/administrador/ventas/corte-actual"{
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
         )
         .then((response) => {
           this.responseCaja = response.data[0];

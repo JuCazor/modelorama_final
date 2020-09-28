@@ -61,7 +61,11 @@ export default {
         
       axios
         .get(
-          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/pagina/"+id
+          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/pagina/"+id,{
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
         )
         .then((response) => {
           this.response = response.data.data
@@ -78,6 +82,7 @@ export default {
                 axios({
                     url: "http://178.128.183.223:3333/api/v1/administrador/generar-hoja/"+id, // Interface name
                     method: 'get',
+                    headers: 'Bearer' + localStorage.token,
                     responseType:"blob" 
                 }).then(function (response) {
                     const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' })
@@ -100,7 +105,12 @@ export default {
     getVentaInicial() {
       axios
         .get(
-          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/pagina/1"
+          "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/pagina/1",
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
         )
         .then((response) => {
           this.cantidadCortes = response.data.total    

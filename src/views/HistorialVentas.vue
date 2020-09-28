@@ -108,7 +108,12 @@ export default {
       axios
         .get(
           "http://178.128.183.223:3333/api/v1/administrador/ventas-corte/" +
-            id
+            id,
+            {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
         )
         .then((response) => {
           this.response = response.data;
