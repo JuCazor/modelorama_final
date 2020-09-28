@@ -814,7 +814,13 @@ export default {
       this.loading = true;
 
       axios
-        .get("http://178.128.183.223:3333/api/v1/vendedor/productos")
+        .get("http://178.128.183.223:3333/api/v1/vendedor/productos",
+        {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
         .then((response) => {
           this.response = response.data;
           //console.log(response.data);
