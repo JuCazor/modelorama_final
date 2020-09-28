@@ -83,7 +83,7 @@ export default {
                     url: "http://178.128.183.223:3333/api/v1/administrador/generar-hoja/"+id, // Interface name
                     method: 'get',
                     headers: {
-                      Authorization: 'Bearer' + localStorage.token
+                      Authorization: 'Bearer ' + localStorage.token
                       },
                     responseType:"blob" 
                 }).then(function (response) {
