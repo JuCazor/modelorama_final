@@ -62,17 +62,17 @@
             <v-row   align="center" justify="center">
               <v-form ref="form">
                 <v-col cols="8">
-                    <v-text-field v-model="nombreCajero" label="Nombre del cajero">
+                    <v-text-field :rules="inputRules" v-model="nombreCajero" label="Nombre del cajero">
 
                     </v-text-field>
                 </v-col>
                 <v-col cols="8">
-                    <v-text-field v-model="nombreUsuario" label="Nombre de usuario">
+                    <v-text-field :rules="inputRules" v-model="nombreUsuario" label="Nombre de usuario">
 
                     </v-text-field>
                 </v-col>
                 <v-col cols="8">
-                    <v-text-field  v-model="contraseñaCrearUsuario" label="Contraseña">
+                    <v-text-field :rules="inputRules"  v-model="contraseñaCrearUsuario" label="Contraseña">
 
                     </v-text-field>
                 </v-col>
@@ -114,6 +114,9 @@ export default {
       timeout: 2000,
       texto: '',
       snackbar: false,
+      inputRules:[
+        value => !!value || 'Este campo es requerido.'
+      ],
     };
   },
   methods: {

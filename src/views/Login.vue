@@ -64,6 +64,7 @@ export default {
       loading: false,
       snackbar: false,
       show2: false,
+      text: ''
     };
   },
   methods: {
@@ -79,21 +80,28 @@ export default {
         .then( response => {
           this.loading = false;
             //console.log(response.data)
-            if(response.data.privilegiado){
-              localStorage.loged = 'admin';
-              localStorage.token = response.data.token;
-              this.$router.push('/ventas')
-            }else{
-              if(!response.data.privilegiado){
-                localStorage.loged = 'user';
+            if(response.data.message != "Credenciales incorrectas."){
+              if(response.data.privilegiado){
+                localStorage.loged = 'admin';
                 localStorage.token = response.data.token;
-                this.$router.push('/ventas/cajero')
-              }else
-                this.snackbar = true;
+                this.$router.push('/ventas')
+              }else{
+                if(!response.data.privilegiado){
+                  localStorage.loged = 'user';
+                  localStorage.token = response.data.token;
+                  this.$router.push('/ventas/cajero')
+                }else
+                  this.snackbar = true;
+              }
+            }else{
+              this.texto = "Credenciales incorrectas."
+              this.snackbar = true;
             }
+            
           })
         .catch(e => e );
       }else{
+        this.texto = "Credenciales incorrectas."
         this.snackbar = true;
       }
     },

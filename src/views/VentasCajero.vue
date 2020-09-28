@@ -866,7 +866,52 @@ export default {
       //console.log(this.itemsDeVenta[0])
       //console.log(this.responsePreventa.promocionesAplicables)
       //console.log(this.ventaEspecial)
-      axios
+      if(this.ventaEspecial){
+        //console.log(this.nombreComprador)
+        if(this.nombreComprador != null){
+          axios
+          .post(
+            "http://178.128.183.223:3333/api/v1/vendedor/vender",
+            {
+              //total: 10,
+              hora: this.hora,
+              fecha: this.dia,
+              productos: this.responsePreventa.productos,
+              promocionesAplicables: this.responsePreventa.promocionesAplicables,
+              ventaExtraordinaria: this.ventaEspecial,
+              nombreComprador: this.nombreComprador,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.token,
+              },
+            }
+          )
+          .then((response) => {
+            response
+            //this.responsePreventa = response.data;
+            //console.log("asdadad")
+            //console.log(response)
+            this.dialogPreventa = false; 
+            this.totalPreventa = 0
+            this.nombreComprador = ''
+            this.texto = "Venta terminada";
+            this.snackbar = true;
+            this.getProductos();
+            for (let index = 0; index < this.itemsDeVenta.length; index++) {
+              this.eliminarCarrito(index);
+              
+            }
+            this.itemsDeVenta = []
+          })
+          .catch((e) => e);
+        }else{
+          this.texto = "Debe añadir el nombre del cliente";
+          this.snackbar = true;
+        }
+        
+      }else{
+        axios
         .post(
           "http://178.128.183.223:3333/api/v1/vendedor/vender",
           {
@@ -876,7 +921,7 @@ export default {
             productos: this.responsePreventa.productos,
             promocionesAplicables: this.responsePreventa.promocionesAplicables,
             ventaExtraordinaria: this.ventaEspecial,
-            nombreComprador: this.nombreComprador,
+            nombreComprador: 'SN',
           },
           {
             headers: {
@@ -888,7 +933,7 @@ export default {
           response
           //this.responsePreventa = response.data;
           //console.log("asdadad")
-          console.log(response)
+          //console.log(response)
           this.dialogPreventa = false; 
           this.totalPreventa = 0
           this.nombreComprador = ''
@@ -902,6 +947,7 @@ export default {
           this.itemsDeVenta = []
         })
         .catch((e) => e);
+      }
     },
     updateProduct(id, n) {
       this.loading = true;

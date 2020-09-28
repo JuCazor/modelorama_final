@@ -374,7 +374,7 @@
                     <v-btn v-show="false" icon v-bind="attrs" v-on="on" @click="añadirAVenta()">
                       <v-icon color="grey lighten-1">mdi-plus</v-icon>
                     </v-btn>
-                    <v-dialog v-model="addaVenta" max-width="400px">
+                    <v-dialog max-width="400px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn v-on="on" v-bind="attrs" tile depressed dark color="yellow darken-1">
                           <v-icon color="white">mdi-plus</v-icon>Añadir a venta
@@ -405,7 +405,7 @@
                           </v-flex>
                         </div>
                         <v-card-actions>
-                          <v-btn color="yellow darken-4" @click="addaVenta = false" outlined>cancelar</v-btn>
+                          
                           <v-spacer></v-spacer>
                           <v-btn color="indigo darken-4" dark @click="añadirAVenta(index,cantidad)">Añadir producto</v-btn>
                         </v-card-actions>
@@ -455,8 +455,10 @@
             </v-list-item-group>
           </v-list>
           <v-row v-if="ventaEspecial">
-            <v-flex md12 sm12 lg12>
-              <v-text-field style="width: 80%; margin-left: 10%" v-model="nombreComprador" label="Nombre del cliente"></v-text-field> 
+            <v-flex  md12 sm12 lg12>
+              <v-form>
+                <v-text-field style="width: 80%; margin-left: 10%" v-model="nombreComprador" label="Nombre del cliente"></v-text-field> 
+              </v-form>
             </v-flex>
             
           </v-row>
@@ -762,7 +764,7 @@ export default {
       responsePreventa: [],
       dialogPreventa: false,
       totalPreventa: 0,
-      nombreComprador: '',
+      nombreComprador: null,
       otro: false,
       descri: '',
       prodBuscar: '',
@@ -867,13 +869,13 @@ export default {
           this.enable = true;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
-          this.nombreProducto = "",
-          this.precioCompra = "",
-          this.precioVenta = "",
-          this.descripcion = "",
-          this. stock = "",
-          this.stockAlerta = "",
-          this.codigoBarra = "",
+          this.nombreProducto = ""
+          this.precioCompra = ""
+          this.precioVenta = ""
+          this.descripcion = ""
+          this. stock = ""
+          this.stockAlerta = ""
+          this.codigoBarra = ""
           this.getProductos()
         })
         .catch((e) => e);
@@ -907,6 +909,16 @@ export default {
           this.enable = true;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
+          this.nombreProducto = ""
+          this.precioCompra = ""
+          this.nomCerveza = ""
+          this.presi = ""
+          this.descri =  ""
+          this.precioVenta = ""
+          this.descripcion = ""
+          this. stock = ""
+          this.stockAlerta = ""
+          this.codigoBarra = ""
           this.getProductos()
           
         })
@@ -1003,6 +1015,8 @@ export default {
       this.itemsDeVenta.pop(i);
     },
     comprobarValor(index) {
+      //console.log(this.cantidad)
+      //console.log(this.response[index].cantidadExistente)
       if (this.cantidad >= 1 && this.cantidad <= this.response[index].cantidadExistente  ){
         return true;
       }else{
@@ -1014,7 +1028,8 @@ export default {
     },
     vender() {
       //this.dateNow();
-      axios
+        this.totalPreventa = 0;
+        axios
         .post(
           "http://178.128.183.223:3333/api/v1/administrador/preventa",
           {
@@ -1043,13 +1058,61 @@ export default {
           //this.snackbar = true;
         })
         .catch((e) => e);
+      
+      
     },
     terminarVenta() {
       this.dateNow();
+      //var falseF = false
       //console.log(this.itemsDeVenta[0])
       //console.log(this.responsePreventa.promocionesAplicables)
       //console.log(this.ventaEspecial)
-      axios
+      if(this.ventaEspecial){
+        //console.log(this.nombreComprador)
+        if(this.nombreComprador != null){
+          axios
+          .post(
+            "http://178.128.183.223:3333/api/v1/administrador/vender",
+            {
+              //total: 10,
+              hora: this.hora,
+              fecha: this.dia,
+              productos: this.responsePreventa.productos,
+              promocionesAplicables: this.responsePreventa.promocionesAplicables,
+              ventaExtraordinaria: this.ventaEspecial,
+              nombreComprador: this.nombreComprador,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.token,
+              },
+            }
+          )
+          .then((response) => {
+            response
+            //this.responsePreventa = response.data;
+            //console.log("asdadad")
+            //console.log(response)
+            this.dialogPreventa = false; 
+            this.totalPreventa = 0
+            this.nombreComprador = ''
+            this.texto = "Venta terminada";
+            this.snackbar = true;
+            this.getProductos();
+            for (let index = 0; index < this.itemsDeVenta.length; index++) {
+              this.eliminarCarrito(index);
+              
+            }
+            this.itemsDeVenta = []
+          })
+          .catch((e) => e);
+        }else{
+          this.texto = "Debe añadir el nombre del cliente";
+          this.snackbar = true;
+        }
+        
+      }else{
+        axios
         .post(
           "http://178.128.183.223:3333/api/v1/administrador/vender",
           {
@@ -1059,7 +1122,7 @@ export default {
             productos: this.responsePreventa.productos,
             promocionesAplicables: this.responsePreventa.promocionesAplicables,
             ventaExtraordinaria: this.ventaEspecial,
-            nombreComprador: this.nombreComprador,
+            nombreComprador: 'SN',
           },
           {
             headers: {
@@ -1071,7 +1134,7 @@ export default {
           response
           //this.responsePreventa = response.data;
           //console.log("asdadad")
-          console.log(response)
+          //console.log(response)
           this.dialogPreventa = false; 
           this.totalPreventa = 0
           this.nombreComprador = ''
@@ -1085,6 +1148,8 @@ export default {
           this.itemsDeVenta = []
         })
         .catch((e) => e);
+      }
+      
     },
     updateProduct(id, n) {
       this.loading = true;
