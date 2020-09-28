@@ -866,6 +866,13 @@ export default {
           this.enable = true;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
+          this.nombreProducto = "",
+          this.precioCompra = "",
+          this.precioVenta = "",
+          this.descripcion = "",
+          this. stock = "",
+          this.stockAlerta = "",
+          this.codigoBarra = "",
           this.getProductos()
         })
         .catch((e) => e);

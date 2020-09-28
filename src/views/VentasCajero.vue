@@ -593,7 +593,12 @@ export default {
         .post("https://modelorama-back.herokuapp.com/api/v1/vendedor/productos/busqueda/nombre",
         {
           nombre: this.prodBuscar
-        })
+        },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          })
         .then((response) => {
           this.response = response.data;
           //console.log(response.data);
@@ -679,6 +684,13 @@ export default {
           this.enable = true;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
+          this.nombreProducto = "",
+          this.precioCompra = "",
+          this.precioVenta = "",
+          this.descripcion = "",
+          this. stock = "",
+          this.stockAlerta = "",
+          this.codigoBarra = "",
           this.getProductos()
         })
         .catch((e) => e);
