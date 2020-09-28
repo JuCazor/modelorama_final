@@ -773,7 +773,7 @@ export default {
       
 
       axios
-        .post("https://modelorama-back.herokuapp.com/api/v1/administrador/productos/busqueda/nombre",
+        .post("http://178.128.183.223:3333/api/v1/administrador/productos/busqueda/nombre",
         {
           nombre: this.prodBuscar
         },
