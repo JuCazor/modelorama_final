@@ -773,10 +773,15 @@ export default {
       
 
       axios
-        .post("https://modelorama-back.herokuapp.com/api/v1/vendedor/productos/busqueda/nombre",
+        .post("https://modelorama-back.herokuapp.com/api/v1/administrador/productos/busqueda/nombre",
         {
           nombre: this.prodBuscar
-        })
+        },
+        {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          })
         .then((response) => {
           this.response = response.data;
           //console.log(response.data);

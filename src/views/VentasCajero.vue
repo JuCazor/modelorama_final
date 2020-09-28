@@ -815,7 +815,7 @@ export default {
       //this.dateNow();
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/preventa",
+          "http://178.128.183.223:3333/api/v1/vendedor/preventa",
           {
             //total: 10,
             //ora: this.hora,
@@ -850,7 +850,7 @@ export default {
       //console.log(this.ventaEspecial)
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/vender",
+          "http://178.128.183.223:3333/api/v1/vendedor/vender",
           {
             //total: 10,
             hora: this.hora,
