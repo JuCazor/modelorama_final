@@ -23,8 +23,10 @@
                   block
                   v-on="on"
                   v-bind="attrs"
-                  outlined
-                  color="orange lighten-2"
+                  depressed
+                  tile
+                  dark
+                  color="yellow darken-1"
                   >Detalles</v-btn
                 >
               </template>
