@@ -26,7 +26,7 @@
         </v-flex>
         <v-flex xs6 sm4 md2>
           <div class="caption grey--text">Total del corte:</div>
-          <div>{{todo.total}}</div>
+          <div>${{todo.total}}</div>
         </v-flex>
         <v-flex xs6 sm6 md4>
           <v-btn color="yellow darken-1" tile depressed dark :to='"/ventas/historial/"+todo.id'>

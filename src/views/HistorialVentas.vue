@@ -12,7 +12,7 @@
         </v-flex>
         <v-flex xs6 sm4 md2>
           <div class="caption grey--text">Total:</div>
-          <div>{{ todo.total }}</div>
+          <div>${{ todo.total }}</div>
         </v-flex>
 
         <v-flex xs6 sm4 md2>
