@@ -30,6 +30,9 @@
                     <v-chip tile dark text-color="indigo darken-4" color="yellow darken-1" to="/promociones">Ver las promociones</v-chip>
                 </v-slide-item>
                 <v-slide-item>
+                    <v-chip tile dark text-color="indigo darken-4" color="yellow darken-1" to="/envases">Retornables</v-chip>
+                </v-slide-item>
+                <v-slide-item>
                   <v-chip text-color="indigo darken-4" color="yellow darken-1" tile dark @click="dialogPromo = true">Añadir promociones <v-icon>mdi-plus</v-icon> </v-chip>
                 </v-slide-item>
                 <v-slide-item>
@@ -711,6 +714,7 @@ export default {
       response: "",
       presi: '',
       responseCaja: "",
+      retornable: false,
       cantidad: 1,
       texto: "",
       itemsDeVenta: [],
@@ -861,6 +865,7 @@ export default {
             cantidadAlerta: this.stockAlerta,
             codigo: this.codigoBarra,
             imagen: 'hola',
+            envases: this.retornable
      
           },
           {
@@ -880,9 +885,11 @@ export default {
           this.precioCompra = ""
           this.precioVenta = ""
           this.descripcion = ""
-          this. stock = ""
+          this.stock = ""
           this.stockAlerta = ""
           this.codigoBarra = ""
+          this.retornable = false
+          this.cerveza = false
           this.getProductos()
         })
         .catch((e) => e);
