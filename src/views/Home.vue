@@ -849,7 +849,7 @@ export default {
           })
           this.loading = false;
         })
-        .catch((e) => e);
+        .catch((e) => console.log(e));
     },
     addProduct() {
       this.loading = true;
@@ -1259,7 +1259,7 @@ export default {
     },
     eliminarProducto(id){
       axios
-        .put("https://178.128.183.223:3333/api/v1/administrador/productos/inhabilitar/"+id,
+        .put("http://178.128.183.223:3333/api/v1/administrador/productos/inhabilitar/"+id,
           {
             headers: {
               Authorization: "Bearer " + localStorage.token,

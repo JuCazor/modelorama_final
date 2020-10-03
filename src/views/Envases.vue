@@ -219,6 +219,7 @@ export default {
       }
     },
     getVentaInicial() {
+        console.log(localStorage.token)
       axios
         .get("http://178.128.183.223:3333/api/v1/administrador/productos/envases", {
           headers: {
@@ -229,9 +230,9 @@ export default {
           console.log(response);
           this.response = response.data;
           this.loading = false;
-          //console.log(response)
+          console.log(localStorage.token)
         })
-        .catch((e) => e);
+        .catch((e) => console.log(e));
     },
     dateNow() {
       const today = new Date();
