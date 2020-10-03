@@ -147,7 +147,7 @@
           <v-btn
             color="indigo darken-4"
             outlined
-            @click="restarProducto(todo.id)"
+            @click="restarProducto(todo.id, todo.paquetesDisponibles)"
           >
             <v-icon>mdi-minus</v-icon>
             Restar producto
@@ -157,7 +157,7 @@
             outlined
             color="indigo darken-4"
             class="ml-5"
-            @click="sumarProducto(todo.id)"
+            @click="sumarProducto(todo.id, todo.paquetesDisponibles)"
           >
             <v-icon>mdi-plus</v-icon>
             Sumar produto
@@ -210,7 +210,7 @@
                 <v-btn @click="sumarAlmacen()" height="55" depressed tile dark color="yellow darken-1">
                   sumar
                 </v-btn>
-                <v-btn class="ml-5" @click="dialogRestar = !dialogRestar" height="55" depressed tile dark color="yellow darken-1">
+                <v-btn class="ml-5" @click="dialogSumar = !dialogSumar" height="55" depressed tile dark color="yellow darken-1">
                   cancelar
                 </v-btn>
               </v-flex>
@@ -295,6 +295,7 @@ export default {
       inputResta: [(value) => !!value || "Este campo es requerido.",
         (value) => value > 0 || "Debe ser mayor a 0"],
       cantidadCambio: null,
+      maximo: 0,
     };
   },
   methods: {
@@ -317,7 +318,7 @@ export default {
           )
           .then((response) => {
             this.loading = false;
-            console.log(response);
+            //console.log(response);
             this.getVentaInicial()
             this.nombreProducto = ''
             this.cantidadExistente = ''
@@ -328,6 +329,7 @@ export default {
       }
     },
     getVentaInicial() {
+      
       axios
         .get("http://178.128.183.223:3333/api/v1/administrador/deposito", {
           headers: {
@@ -335,7 +337,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
+          //console.log(response);
           this.response = response.data;
           this.loading = false;
           //console.log(response)
@@ -353,18 +355,22 @@ export default {
       this.hora = today.getHours() + ":" + today.getMinutes();
       //console.log(this.dia);
     },
-    sumarProducto(id){
+    sumarProducto(id, maximo){
       this.idItem = id;
       this.dialogSumar = true;
+      this.maximo = maximo
+      maximo
     },
-    restarProducto(id){
+    restarProducto(id, maximo){
+      maximo
       this.idItem = id;
       this.dialogRestar = true;
+      this.maximo = maximo
     },
     comprobarValor() {
       //console.log(this.cantidad)
       //console.log(this.response[index].cantidadExistente)
-      if (this.cantidadCambio >= 1){ //&& this.cantidadCambio <= this.response[index].cantidadExistente){
+      if (this.cantidadCambio >= 1 && this.cantidadCambio <= this.maximo){ //&& this.cantidadCambio <= this.response[index].cantidadExistente){
         return true;
       }else{
         this.texto = "La cantidad debe ser igual o menor a la cantidad de existencia";
@@ -375,7 +381,8 @@ export default {
     },
     restarAlmacen(){
       if (this.$refs.formRestar.validate()) { 
-        axios
+        if(this.comprobarValor()){
+          axios
           .put(
             "http://178.128.183.223:3333/api/v1/administrador/deposito/restar/"+this.idItem,
             {
@@ -389,17 +396,20 @@ export default {
           )
           .then((response) => {
             this.dialogRestar = false;
-            console.log(response);
+            //console.log(response);
             this.getVentaInicial()
           })
           .catch((e) => e);
+        }
+        
       }
       
     },
     sumarAlmacen(){
       //console.log(this.idItem)
       if (this.$refs.formSumar.validate()) { 
-        axios
+        
+          axios
           .put(
             "http://178.128.183.223:3333/api/v1/administrador/deposito/sumar/"+this.idItem,
             {
@@ -413,10 +423,12 @@ export default {
           )
           .then((response) => {
             this.dialogSumar = false;
-            console.log(response);
+            //console.log(response);
             this.getVentaInicial()
           })
           .catch((e) => e); 
+        
+        
       }
       
     },
@@ -432,7 +444,7 @@ export default {
           )
           .then((response) => {
             //this.dialogSumar = false;
-            console.log(response);
+            //console.log(response);
             this.getVentaInicial()
           })
           .catch((e) => e); 

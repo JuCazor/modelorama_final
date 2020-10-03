@@ -842,14 +842,14 @@ export default {
         )
         .then((response) => {
           this.response = response.data;
-          console.log(response.data);
+          //console.log(response.data);
           this.response.forEach(element => {
             this.nombresProductos.push(element.nombre)
             this.idsNombresProductos.push(element.id)
           })
           this.loading = false;
         })
-        .catch((e) => console.log(e));
+        .catch((e) => e);
     },
     addProduct() {
       this.loading = true;
@@ -1260,6 +1260,7 @@ export default {
     eliminarProducto(id){
       axios
         .put("http://178.128.183.223:3333/api/v1/administrador/productos/inhabilitar/"+id,
+        {},
           {
             headers: {
               Authorization: "Bearer " + localStorage.token,
@@ -1267,11 +1268,11 @@ export default {
           })
         .then((response) =>{
           response
-          console.log(response)
+          //console.log(response)
           this.getProductos()
         }).catch((e) => {
           e
-          console.log(e)
+          //console.log(e)
         })
     }
   },
