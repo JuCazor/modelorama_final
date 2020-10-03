@@ -1,5 +1,13 @@
 <template>
   <v-container class="my-5">
+    <v-btn
+        color="yellow darken-1"
+        
+        text-color="indigo darken-4"
+        tile dark
+        fab fixed top left
+        to="/ventas"
+        >Home</v-btn>  
     <v-card flat class="pa-6" v-for="todo in ventas" :key="todo.id">
       <v-layout row wrap :class="`pa-3 project ${todo.estado}`">
         <v-flex xs6 sm4 sd4 md4>
@@ -97,7 +105,12 @@
 </template>
 <script>
 import axios from "axios";
+
+
 export default {
+  components: {
+  
+  },
   data() {
     return {
       response: "",

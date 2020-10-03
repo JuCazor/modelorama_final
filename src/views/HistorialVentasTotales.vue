@@ -1,5 +1,13 @@
 <template>
   <v-container class="my-5">
+    <v-btn
+        color="yellow darken-1"
+        
+        text-color="indigo darken-4"
+        tile dark
+        fab fixed top left
+        to="/ventas"
+        >Home</v-btn>  
     <v-row class="d-flex flex-wrap">
       <v-col cols="12" md="6" sm="6">
         <v-spacer></v-spacer>
@@ -143,7 +151,11 @@
 </template>
 <script>
 import axios from "axios";
+
+
 export default {
+  components: {
+  },
   data() {
     return {
       response: "",

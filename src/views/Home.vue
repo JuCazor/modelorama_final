@@ -1,11 +1,8 @@
 <template>
   <v-container class="fill-height" fluid>
-    <v-row class="fill-height">
-      
-      <v-col cols="8" sm="8" md="8">
-        <v-row>
-          <v-col cols="12" sm="12" md="12"> 
-        <v-card  >
+    <v-row>
+          <v-col cols="12" sm="12" md="12">
+          <v-card >
           <v-toolbar dark color="indigo darken-4" elevation="0" >Atajos:
             <v-flex md11 class="d-flex flex-wrap">
               <v-slide-group show-arrows>
@@ -15,8 +12,8 @@
                     class="ml-6"
                     text-color="indigo darken-4"
                     tile dark
-                    @click="cerrarSesion()"
-                  >Cerrar sesión</v-chip>
+                    to="/almacen"
+                  >Almacen</v-chip>
                 </v-slide-item>
                 <v-slide-item>
                   <v-chip
@@ -51,7 +48,8 @@
                     <v-spacer />
                   </v-toolbar>
                   <v-flex style="margin-left: 35%" md12 lg12 sm12>
-                    <v-checkbox color="#FFAD5C" v-model="cerveza" class="mx-2" label="¿Cerveza?"></v-checkbox>
+                    <v-checkbox color="#FFAD5C" v-model="cerveza" label="¿Cerveza?"></v-checkbox>
+                    <v-checkbox color="#FFAD5C" v-model="retornable" label="¿Retornable?"></v-checkbox>
                   </v-flex>
                   <div style=" margin-left: 10% !important; margin-right: 10% !important;">
                     <v-text-field
@@ -202,22 +200,30 @@
                   <v-chip text-color="indigo darken-4"   color="yellow darken-1" tile dark to="/cajeros">
                    Añadir cajero<v-icon>mdi-plus</v-icon></v-chip>
                 </v-slide-item>
+                <v-divider></v-divider>
+                <v-slide-item>
+                  <v-chip
+                    color="yellow darken-1"
+                    right
+                    text-color="indigo darken-4"
+                    tile dark
+                    @click="cerrarSesion()"
+                  >Cerrar sesión</v-chip>
+                </v-slide-item>
               </v-slide-group>
               
               
-            </v-flex>
-          </v-toolbar>
-        </v-card>
-      </v-col>
+                </v-flex>
+              </v-toolbar>
+            </v-card>
+          </v-col>
         </v-row>
-
-        <v-card height="600" class="elevation-12">
-          
+    <v-row class="fill-height"> 
+      <v-col cols="8" sm="8" md="8">
+        <v-card height="600" class="elevation-12"> 
           <v-toolbar color="indigo darken-4" dark elevation="0" height="100">
             <div class="h1" style="font-size: 28px !important;">Lista de productos</div>
-
             <v-spacer />
-
             <v-text-field
               height="20"
               v-model="prodBuscar"
@@ -230,10 +236,8 @@
               @click:append="buscar()"
               @click:append-outer="getProductos()"
             >
-              
             </v-text-field>
           </v-toolbar>
-          
           <v-list two-line subheader>
             <v-list-item
               :inactive="true"
@@ -247,7 +251,6 @@
                     <v-icon >mdi-glass-mug-variant</v-icon>
                   </v-btn>
                 </template>
-
                 <v-card>
                   <v-toolbar color="indigo darken-4" dark elevation="0">
                     <v-spacer />
@@ -362,6 +365,9 @@
                   </v-snackbar>
                 </div>
               </v-dialog>
+              <v-btn tile dark depressed @click="eliminarProducto(item.id)" class="rounded" color="red darken-1">
+                <v-icon >mdi-trash-can</v-icon>
+              </v-btn>
               <v-list-item-content class="ml-6">
                 <v-list-item-title v-text="item.nombre"></v-list-item-title>
                 <v-list-item-subtitle
@@ -374,19 +380,19 @@
                     <v-btn v-show="false" icon v-bind="attrs" v-on="on" @click="añadirAVenta()">
                       <v-icon color="grey lighten-1">mdi-plus</v-icon>
                     </v-btn>
-                    <v-dialog max-width="400px">
+                    <v-dialog max-width="400px" >
+                      
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn v-on="on" v-bind="attrs" tile depressed dark color="yellow darken-1">
                           <v-icon color="white">mdi-plus</v-icon>Añadir a venta
                         </v-btn>
                       </template>
-
                       <v-card>
                         <v-card-title>Añadir {{item.nombre}} a venta</v-card-title>
                         <div class>
                           <v-flex md12 lg12 class="d-flex flex-warp justify-center">
                             <v-flex md2>
-                              <v-btn color="yellow darken-1" dark @click="cantidad--">-</v-btn>
+                              <v-btn color="yellow darken-1" height="56" dark @click="cantidad--">-</v-btn>
                             </v-flex>
                             <v-flex md6>
                               <v-form>
@@ -394,18 +400,19 @@
                                   dense
                                   filled
                                   type="number"
+                                  label="Piezas:"
                                   v-model="cantidad"
                                   :rules="cantidadVentaRules"
                                 ></v-text-field>
                               </v-form>
                             </v-flex>
                             <v-flex md2>
-                              <v-btn class="ml-1" color="yellow darken-1" dark @click="cantidad++">+</v-btn>
+                              <v-btn class="ml-1" height="56" color="yellow darken-1" dark @click="cantidad++">+</v-btn>
                             </v-flex>
                           </v-flex>
                         </div>
                         <v-card-actions>
-                          
+                          <v-btn >cerrar</v-btn>
                           <v-spacer></v-spacer>
                           <v-btn color="indigo darken-4" dark @click="añadirAVenta(index,cantidad)">Añadir producto</v-btn>
                         </v-card-actions>
@@ -422,7 +429,6 @@
                 </v-tooltip>
               </v-list-item-action>
             </v-list-item>
-
             <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
           </v-list>
         </v-card>
@@ -739,6 +745,7 @@ export default {
         "Cuarto",
         "Modelo 710",
         "Botella",
+        "Botella premium"
       ],
       descripcionCerveza: [
         "355ml",
@@ -831,7 +838,7 @@ export default {
         )
         .then((response) => {
           this.response = response.data;
-          //console.log(response.data);
+          console.log(response.data);
           this.response.forEach(element => {
             this.nombresProductos.push(element.nombre)
             this.idsNombresProductos.push(element.id)
@@ -1242,6 +1249,23 @@ export default {
     cerrarSesion(){
       localStorage.loged = ""
        this.$router.push('/')
+    },
+    eliminarProducto(id){
+      axios
+        .put("https://178.128.183.223:3333/api/v1/administrador/productos/inhabilitar/"+id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          })
+        .then((response) =>{
+          response
+          console.log(response)
+          this.getProductos()
+        }).catch((e) => {
+          e
+          console.log(e)
+        })
     }
   },
   mounted() {

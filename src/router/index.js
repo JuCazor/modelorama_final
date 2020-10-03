@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Promociones from '../views/Promociones.vue'
 import Cajeros from '../views/Cajeros.vue'
 import VentasCajero from '../views/VentasCajero.vue'
+import Almacen from '../views/Almacen.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/ventas',
       name: 'ventas',
       component: Home
+    },
+    {
+      path: '/almacen',
+      name: 'almacen',
+      component: Almacen
     },
     {
       path: '/cajeros',

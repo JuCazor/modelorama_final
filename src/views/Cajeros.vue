@@ -1,6 +1,14 @@
 <template>
   <v-container class="my-5">
-      <v-btn color="indigo darken-4" large dark block @click="dialogUsuarios = !dialogUsuarios">Añadir cajero</v-btn>
+    <v-btn
+        color="yellow darken-1"
+        
+        text-color="indigo darken-4"
+        tile dark
+        fab fixed top left
+        to="/ventas"
+        >Home</v-btn> 
+      <v-btn color="indigo darken-4" large height="70" dark block @click="dialogUsuarios = !dialogUsuarios">Añadir cajero</v-btn>
     <v-card flat class="pa-6" v-for="(item, index) in response" :key="index">
       <v-layout row wrap :class="`pa-3 project`">
         <v-flex xs6 sm4 sd4 md3>
