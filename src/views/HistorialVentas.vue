@@ -133,7 +133,7 @@ export default {
         .then((response) => {
           this.response = response.data;
           this.ventas = response.data.ventas;
-          console.log(response);
+          //console.log(response);
         })
         .catch((e) => e);
     },
