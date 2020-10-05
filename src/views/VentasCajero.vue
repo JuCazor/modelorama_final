@@ -277,6 +277,14 @@
             </v-flex>
             
           </v-row>
+          <v-row v-if="(!verCarrito && !ventaEspecial)">
+            <v-flex  md12 sm12 lg12>
+              <v-form>
+                <v-text-field style="width: 80%; margin-left: 10%" v-model="pago" type="number" label="pago"></v-text-field> 
+              </v-form>
+            </v-flex>
+            
+          </v-row>
           <v-row style="margin-left: 37%; width: 26%" v-if="!verCarrito">
             <v-flex md12 lg12 sm12>
               <v-checkbox color="#FFAD5C" v-model="ventaEspecial" class="mx-2" label="Venta especial"></v-checkbox>
@@ -367,17 +375,37 @@
                   </v-list>
                 </v-col>
                 <v-col cols="12" md="12" sm="12" >
-                  <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
-                    <h4  style="float: left; ">
-                      Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
-                    </h4>
-                    
-                  </v-row>
-                  <v-row style="width: 36%; margin-left: 32%" v-else>
-                    <h4 style="float: left; ">
-                      Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
-                    </h4>
-                  </v-row>
+                  <div v-if="ventaEspecial">
+                    <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
+                      <h4  style="float: left; ">
+                        Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
+                      </h4>
+                      
+                    </v-row>
+                    <v-row style="width: 36%; margin-left: 32%" v-else>
+                      <h4 style="float: left; ">
+                        Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
+                      </h4>
+                    </v-row>
+                  </div>
+                  <div v-else>
+                    <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
+                      <h4  style="float: left; ">
+                        Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
+                      </h4>
+                      
+                    </v-row>
+                    <v-row style="width: 36%; margin-left: 32%" v-else>
+                      <h4 style="float: left; ">
+                        Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
+                      </h4>
+                    </v-row>
+                    <v-row style="width: 48%; margin-left: 26%">
+                      <h4 style="float: left; ">
+                        Cambio: $<p style="margin-left: 3px; float: right;">{{(pago-totalPreventa).toFixed(2)}}</p> 
+                      </h4>
+                    </v-row>
+                  </div>
                   
                 </v-col>
               </v-row>
@@ -583,6 +611,7 @@ export default {
       otro: false,
       descri: '',
       prodBuscar: '',
+      pago: 0
     };
   },
   methods: {
@@ -831,7 +860,9 @@ export default {
     },
     vender() {
       //this.dateNow();
-      axios
+      if(this.pago >= 0){
+        this.totalPreventa = 0;
+        axios
         .post(
           "http://178.128.183.223:3333/api/v1/vendedor/preventa",
           {
@@ -860,6 +891,13 @@ export default {
           //this.snackbar = true;
         })
         .catch((e) => e);
+      }else{
+        this.texto = "Indique una cantidad valida";
+        this.snackbar = true;
+      }
+        
+      
+      
     },
     terminarVenta() {
       this.dateNow();

@@ -318,6 +318,7 @@ export default {
           )
           .then((response) => {
             this.loading = false;
+            response
             //console.log(response);
             this.getVentaInicial()
             this.nombreProducto = ''
@@ -397,6 +398,7 @@ export default {
           .then((response) => {
             this.dialogRestar = false;
             //console.log(response);
+            response
             this.getVentaInicial()
           })
           .catch((e) => e);
@@ -423,6 +425,7 @@ export default {
           )
           .then((response) => {
             this.dialogSumar = false;
+            response
             //console.log(response);
             this.getVentaInicial()
           })
@@ -445,6 +448,7 @@ export default {
           .then((response) => {
             //this.dialogSumar = false;
             //console.log(response);
+            response
             this.getVentaInicial()
           })
           .catch((e) => e); 
