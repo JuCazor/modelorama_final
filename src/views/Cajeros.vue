@@ -1,23 +1,34 @@
 <template>
   <v-container class="my-5">
     <v-btn
-        color="yellow darken-1"
-        
-        text-color="indigo darken-4"
-        tile dark
-        fab fixed top left
-        to="/ventas"
-        >Home</v-btn> 
+      color="indigo darken-4"
+      tile
+      dark
+      fab
+      fixed
+      top
+      left
+      to="/ventas"
+      >Home</v-btn
+    >
       <v-btn color="indigo darken-4" large height="70" dark block @click="dialogUsuarios = !dialogUsuarios">Añadir cajero</v-btn>
     <v-card flat class="pa-6" v-for="(item, index) in response" :key="index">
       <v-layout row wrap :class="`pa-3 project`">
         <v-flex xs6 sm4 sd4 md3>
           <div class="caption grey--text">Nombre del cajero:</div>
           <div>{{item.nombre}}</div>
+          <div class="caption grey--text">Tel. del cajero:</div>
+          <div>{{item.telefono}}</div>
+          <div class="caption grey--text">Fecha de alta:</div>
+          <div>{{item.created_at}}</div>
         </v-flex>
         <v-flex xs6 sd4 md3>
           <div class="caption grey--text">Nombre de usuario:</div>
           <div>{{item.username}}</div>
+          <div class="caption grey--text">Tel. de contacto:</div>
+          <div>{{item.telefonoContacto}}</div>
+          <div class="caption grey--text">Fecha de baja:</div>
+          <div>{{item.FechaBaja}}</div>
         </v-flex>
         <v-flex xs6 sd4 md3>
           <v-dialog v-model="contraMostrar" max-width="600px">
@@ -84,6 +95,16 @@
 
                     </v-text-field>
                 </v-col>
+                <v-col cols="8">
+                    <v-text-field :rules="inputRules"  v-model="telefonoContacto" label="Telefono de contacto">
+
+                    </v-text-field>
+                </v-col>
+                <v-col cols="8">
+                    <v-text-field :rules="inputRules"  v-model="Telefono" label="Telefono">
+
+                    </v-text-field>
+                </v-col>
               </v-form>
               
             </v-row>
@@ -125,6 +146,8 @@ export default {
       inputRules:[
         value => !!value || 'Este campo es requerido.'
       ],
+      telefono: '',
+      telefonoContacto: '',
     };
   },
   methods: {
@@ -141,7 +164,9 @@ export default {
                   {
                     username: this.nombreUsuario,
                     nombre: this.nombreCajero,
-                    password: this.contraseñaCrearUsuario
+                    password: this.contraseñaCrearUsuario,
+                    telefono: this.telefono,
+                    telefonoContacto: this.telefonoContacto,
                   },
                   {
                     headers: {
@@ -175,7 +200,7 @@ export default {
         .then((response) => {
           this.response = response.data;
           this.ventas = response.data.ventas
-          //console.log(response);
+          console.log(response);
           this.loading = false;
         })
         .catch((e) => e);

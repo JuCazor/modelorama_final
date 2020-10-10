@@ -1,8 +1,7 @@
 <template>
   <v-container class="my-5">
     <v-btn
-      color="yellow darken-1"
-      text-color="indigo darken-4"
+      color="indigo darken-4"
       tile
       dark
       fab
@@ -16,7 +15,6 @@
       height="50"
       tile
       text-color="indigo darken-4"
-      dark
       block
       color="yellow darken-1"
       @click="dialog = !dialog"
@@ -146,7 +144,7 @@
         <v-flex xs6 sm6 md4>
           <v-btn
             color="indigo darken-4"
-            outlined
+            dark
             @click="restarProducto(todo.id, todo.paquetesDisponibles)"
           >
             <v-icon>mdi-minus</v-icon>
@@ -154,7 +152,7 @@
           </v-btn>
           <v-btn
             :loading="descarga"
-            outlined
+            dark
             color="indigo darken-4"
             class="ml-5"
             @click="sumarProducto(todo.id, todo.paquetesDisponibles)"
@@ -207,10 +205,10 @@
                 lg5
                 style="margin-left: 1% !important; margin-right: 1% !important"
               >
-                <v-btn @click="sumarAlmacen()" height="55" depressed tile dark color="yellow darken-1">
+                <v-btn @click="sumarAlmacen()" height="55" depressed tile  color="yellow darken-1">
                   sumar
                 </v-btn>
-                <v-btn class="ml-5" @click="dialogSumar = !dialogSumar" height="55" depressed tile dark color="yellow darken-1">
+                <v-btn class="ml-5" @click="dialogSumar = !dialogSumar" height="55" depressed tile  color="yellow darken-1">
                   cancelar
                 </v-btn>
               </v-flex>
@@ -253,10 +251,10 @@
                 lg5
                 style="margin-left: 1% !important; margin-right: 1% !important"
               >
-                <v-btn @click="restarAlmacen()" height="55" depressed tile dark color="yellow darken-1">
+                <v-btn @click="restarAlmacen()" height="55" depressed tile  color="yellow darken-1">
                   restar
                 </v-btn>
-                <v-btn class="ml-5" @click="dialogRestar = !dialogRestar" height="55" depressed tile dark color="yellow darken-1">
+                <v-btn class="ml-5" @click="dialogRestar = !dialogRestar" height="55" depressed tile  color="yellow darken-1">
                   cancelar
                 </v-btn>
               </v-flex>

@@ -14,7 +14,7 @@
           <v-card-text style="margin-top: 10% !important;">
             <v-form  ref="form">
               <v-text-field class="text-login" dense filled  label="Usuario" v-model="usuario" name="usuario" type="text" :rules="inputRules" />
-              <v-text-field :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :type="show2 ? 'text' : 'password'" @click:append="show2 = !show2" class="text-login" dense filled  id="password" v-model="contra" label="Contraseña" name="contra" :rules="inputRules"  />
+              <v-text-field v-on:keyup.enter="login()" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :type="show2 ? 'text' : 'password'" @click:append="show2 = !show2" class="text-login" dense filled  id="password" v-model="contra" label="Contraseña" name="contra" :rules="inputRules"  />
             </v-form>
           </v-card-text>
           <v-card-actions>

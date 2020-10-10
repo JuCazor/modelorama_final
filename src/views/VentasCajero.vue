@@ -1,56 +1,51 @@
 <template>
   <v-container class="fill-height" fluid>
-    <v-row class="fill-height">
-      
-      <v-col cols="8" sm="8" md="8">
-        <v-row>
-          <v-col cols="12" sm="12" md="12"> 
-        <v-card  >
-          <v-toolbar dark color="indigo darken-4" elevation="0" >Atajos:
+    <v-row>
+      <v-col cols="12" sm="12" md="12">
+        <v-card>
+          <v-toolbar dark color="indigo darken-4" elevation="0"
+            >Atajos:
             <v-flex md11 class="d-flex flex-wrap">
               <v-slide-group show-arrows>
                 <v-slide-item>
                   <v-chip
                     color="yellow darken-1"
-                    class="ml-6"
+                    right
                     text-color="indigo darken-4"
-                    tile dark
+                    tile
+                    dark
                     @click="cerrarSesion()"
-                  >Cerrar sesión</v-chip>
+                    >Cerrar sesión</v-chip
+                  >
                 </v-slide-item>
-                
               </v-slide-group>
-              
-              
             </v-flex>
           </v-toolbar>
         </v-card>
       </v-col>
-        </v-row>
-
+    </v-row>
+    <v-row class="fill-height">
+      <v-col cols="8" sm="8" md="8">
         <v-card height="600" class="elevation-12">
-          
           <v-toolbar color="indigo darken-4" dark elevation="0" height="100">
-            <div class="h1" style="font-size: 28px !important;">Lista de productos</div>
-
+            <div class="h1" style="font-size: 28px !important">
+              Lista de productos
+            </div>
             <v-spacer />
-
             <v-text-field
               height="20"
               v-model="prodBuscar"
               outlined
-              
               label="Buscar"
               type="text"
               append-icon="mdi-magnify"
               append-outer-icon="mdi-close"
+              v-on:keyup.enter="buscar()"
               @click:append="buscar()"
               @click:append-outer="getProductos()"
             >
-              
             </v-text-field>
           </v-toolbar>
-          
           <v-list two-line subheader>
             <v-list-item
               :inactive="true"
@@ -58,236 +53,123 @@
               :key="item.id"
               @click="algo()"
             >
-              <v-dialog max-width="600px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-on="on" v-bind="attrs" tile dark depressed class="rounded" color="lime darken-1">
-                    <v-icon >mdi-glass-mug-variant</v-icon>
-                  </v-btn>
-                </template>
-
-                <v-card>
-                  <v-toolbar color="indigo darken-4" dark elevation="0">
-                    <v-spacer />
-                    <div class="h1" style="font-size: 28px !important;">Editar producto</div>
-                    <v-spacer />
-                  </v-toolbar>
-                  <div style=" margin-left: 10% !important; margin-right: 10% !important;">
-                    <v-text-field
-                      label="Nombre del producto"
-                      class="rounded-lg"
-                      style="padding-top: 10% !important;"
-                      v-model="item.nombre"
-                      :rules="inputRules"
-                      dense
-                      filled
-                    ></v-text-field>
-                    <v-flex md12 lg12 class="d-flex flex-warp">
-                      <v-flex
-                        md6
-                        lg6
-                        style=" margin-left: 10% !important; margin-right: 10% !important;"
-                      >
-                        <v-text-field
-                          label="Precio venta"
-                          class="rounded"
-                          type="number"
-                          v-model="item.precioVenta"
-                          :rules="inputRules"
-                          dense
-                          filled
-                        ></v-text-field>
-                      </v-flex>
-                      <v-flex
-                        md6
-                        lg6
-                        style=" margin-left: 10% !important; margin-right: 10% !important;"
-                      >
-                        <v-text-field
-                          label="Precio compra"
-                          class="rounded"
-                          type="number"
-                          v-model="item.precioCompra"
-                          :rules="inputRules"
-                          dense
-                          filled
-                        ></v-text-field>
-                      </v-flex>
-                    </v-flex>
-                    <v-text-field
-                      label="Descripción"
-                      class="rounded-lg"
-                      v-model="item.descripcion"
-                      :rules="inputRules"
-                      dense
-                      filled
-                    ></v-text-field>
-                    <v-flex md12 lg12 class="d-flex flex-warp">
-                      <v-flex
-                        md6
-                        lg6
-                        style=" margin-left: 10% !important; margin-right: 10% !important;"
-                      >
-                        <v-text-field
-                          label="Stock"
-                          class="rounded"
-                          type="number"
-                          v-model="item.cantidadExistente"
-                          :rules="inputRules"
-                          dense
-                          filled
-                        ></v-text-field>
-                      </v-flex>
-                      <v-flex
-                        md6
-                        lg6
-                        style=" margin-left: 10% !important; margin-right: 10% !important;"
-                      >
-                        <v-text-field
-                          label="Cantidad para alerta"
-                          class="rounded"
-                          v-model="item.cantidadAlerta"
-                          type="number"
-                          :rules="inputRules"
-                          dense
-                          filled
-                        ></v-text-field>
-                      </v-flex>
-                    </v-flex>
-                    <v-text-field
-                      label="Codigo de barra"
-                      class="rounded-lg"
-                      v-model="item.codigo"
-                      :rules="inputRules"
-                      dense
-                      filled
-                    ></v-text-field>
-                    <v-flex md12 lg12>
-                      <v-btn
-                        style="margin-left: 40%; margin-bottom: 5% !important; margin-top: 5% !important; "
-                        :loading="loading"
-                        dark
-                        color="indigo darken-4"
-                        @click="updateProduct(item.id, index)"
-                      >Editar</v-btn>
-                    </v-flex>
-                  </div>
-                </v-card>
-                <div class="text-center ma-2">
-                  <v-snackbar v-model="snackbar" :timeout="timeout" :bottom="true">
-                    {{texto}}
-                    <v-btn color="pink" text @click="snackbar = false">Cerrar</v-btn>
-                  </v-snackbar>
-                </div>
-              </v-dialog>
+              <v-btn
+                tile
+                dark
+                depressed
+                class="rounded"
+                color="lime darken-1"
+                @click="dialogEditarMetodo(item, index)"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
               <v-list-item-content class="ml-6">
                 <v-list-item-title v-text="item.nombre"></v-list-item-title>
                 <v-list-item-subtitle
-                  v-text='"stock: "+item.cantidadExistente+".Precio: $"+item.precioVenta'
+                  class="subtitle-1"
+                  v-text="
+                    'stock: ' +
+                    item.cantidadExistente +
+                    '.Precio: $' +
+                    item.precioVenta
+                  "
                 ></v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-show="false" icon v-bind="attrs" v-on="on" @click="añadirAVenta()">
-                      <v-icon color="grey lighten-1">mdi-plus</v-icon>
-                    </v-btn>
-                    <v-dialog max-width="400px">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-on="on" v-bind="attrs" tile depressed dark color="yellow darken-1">
-                          <v-icon color="white">mdi-plus</v-icon>Añadir a venta
-                        </v-btn>
-                      </template>
-
-                      <v-card>
-                        <v-card-title>Añadir {{item.nombre}} a venta</v-card-title>
-                        <div class>
-                          <v-flex md12 lg12 class="d-flex flex-warp justify-center">
-                            <v-flex md2>
-                              <v-btn color="yellow darken-1" dark @click="cantidad--">-</v-btn>
-                            </v-flex>
-                            <v-flex md6>
-                              <v-form>
-                                <v-text-field
-                                  dense
-                                  filled
-                                  type="number"
-                                  v-model="cantidad"
-                                  :rules="cantidadVentaRules"
-                                ></v-text-field>
-                              </v-form>
-                            </v-flex>
-                            <v-flex md2>
-                              <v-btn class="ml-1" color="yellow darken-1" dark @click="cantidad++">+</v-btn>
-                            </v-flex>
-                          </v-flex>
-                        </div>
-                        <v-card-actions>
-                          <v-btn color="yellow darken-4" outlined>cancelar</v-btn>
-                          <v-spacer></v-spacer>
-                          <v-btn color="indigo darken-4" dark @click="añadirAVenta(index,cantidad)">Añadir producto</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                      <div class="text-center ma-2">
-                        <v-snackbar v-model="snackbar" :timeout="timeout" :bottom="true">
-                          {{texto}}
-                          <v-btn color="pink" text @click="snackbar = false">Cerrar</v-btn>
-                        </v-snackbar>
-                      </div>
-                    </v-dialog>
-                  </template>
-                  <span>Añadir a formulario de venta</span>
-                </v-tooltip>
+                <v-btn
+                  tile
+                  depressed
+                  color="yellow darken-1"
+                  @click="dialogAñadirACarritoMetodo(index, item)"
+                >
+                  <v-icon>mdi-plus</v-icon>Añadir a venta
+                </v-btn>
               </v-list-item-action>
             </v-list-item>
-
-            <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
+            <v-divider
+              color="indigo darken-4"
+              style="margin-left: 5%; width: 90%"
+              inset
+            ></v-divider>
           </v-list>
         </v-card>
-        
       </v-col>
       <v-col cols="4" sm="4" md="4">
         <v-card height="100%" elevation="10">
           <v-list :dense="true" :nav="true">
-            <v-toolbar color="indigo darken-4"  dark elevation="0">
+            <v-toolbar color="indigo darken-4" dark elevation="0">
               <v-spacer />
-              <div class="h1" style="font-size: 28px !important;">
-                  <v-icon>mdi-cart</v-icon> carrito
+              <div class="h1" style="font-size: 28px !important">
+                <v-icon>mdi-cart</v-icon> carrito
               </div>
-            <v-spacer />
-            
-          </v-toolbar>
+              <v-spacer />
+            </v-toolbar>
             <v-list-item-group color="primary">
-              <v-list-item v-for="(item, i) in itemsDeVenta" :key="i" :inactive="true">
+              <v-list-item
+                v-for="(item, i) in itemsDeVenta"
+                :key="i"
+                :inactive="true"
+              >
                 <v-list-item-content>
-                  <v-list-item-title v-text="item[0]"></v-list-item-title>
-                   <v-list-item-subtitle v-text='"cantidad:"+item[2]'></v-list-item-subtitle>
+                  <v-list-item-title
+                    class="subtitle-1"
+                    v-text="item[0]"
+                  ></v-list-item-title>
+                  <v-list-item-subtitle
+                    class="subtitle-2"
+                    v-text="'cantidad:' + item[2]"
+                  ></v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn color="orange darken-1" outlined @click="eliminarCarrito(i)">
-                    <v-icon color="orange darken-1" small>mdi-trash-can</v-icon>Eliminar
+                  <v-btn
+                    color="orange darken-1"
+                    outlined
+                    @click="eliminarCarrito(i)"
+                  >
+                    <v-icon color="orange darken-1" small>mdi-trash-can</v-icon
+                    >Eliminar
                   </v-btn>
                 </v-list-item-action>
               </v-list-item>
-              <v-divider color="indigo darken-4" style="margin-left: 5%; width: 90%" inset></v-divider>
+              <v-divider
+                color="indigo darken-4"
+                style="margin-left: 5%; width: 90%"
+                inset
+              ></v-divider>
             </v-list-item-group>
           </v-list>
           <v-row v-if="ventaEspecial">
             <v-flex md12 sm12 lg12>
-              <v-text-field style="width: 80%; margin-left: 10%" v-model="nombreComprador" label="Nombre del cliente"></v-text-field> 
-            </v-flex>
-            
-          </v-row>
-          <v-row v-if="(!verCarrito && !ventaEspecial)">
-            <v-flex  md12 sm12 lg12>
               <v-form>
-                <v-text-field style="width: 80%; margin-left: 10%" v-model="pago" type="number" label="pago"></v-text-field> 
+                <v-text-field
+                  style="width: 80%; margin-left: 10%"
+                  v-model="nombreComprador"
+                  label="Nombre del cliente"
+                ></v-text-field>
               </v-form>
             </v-flex>
-            
+          </v-row>
+          <v-row v-if="!verCarrito && !ventaEspecial">
+            <v-flex md12 sm12 lg12>
+              <v-form>
+                <v-text-field
+                  style="width: 80%; margin-left: 10%"
+                  v-model="pago"
+                  class="subtitle-1"
+                  type="number"
+                  label="dinero recibido"
+                ></v-text-field>
+              </v-form>
+            </v-flex>
           </v-row>
           <v-row style="margin-left: 37%; width: 26%" v-if="!verCarrito">
             <v-flex md12 lg12 sm12>
-              <v-checkbox color="#FFAD5C" v-model="ventaEspecial" class="mx-2" label="Venta especial"></v-checkbox>
+              <v-checkbox
+                color="#FFAD5C"
+                v-model="ventaEspecial"
+                class="mx-2"
+                label="Venta especial"
+              ></v-checkbox>
             </v-flex>
           </v-row>
           <v-row>
@@ -297,21 +179,20 @@
               tile
               elevation="0"
               :disabled="verCarrito"
+              large
               dark
-              color="yellow darken-1"
-              
+              color="indigo darken-4"
             >
               <v-icon color="white">mdi-currency-usd</v-icon>vender
             </v-btn>
             <v-spacer></v-spacer>
           </v-row>
-          
         </v-card>
       </v-col>
     </v-row>
     <div class="text-center ma-2">
       <v-snackbar v-model="snackbar" :timeout="timeout" :bottom="true">
-        {{texto}}
+        {{ texto }}
         <v-btn color="pink" text @click="snackbar = false">Cerrar</v-btn>
       </v-snackbar>
     </div>
@@ -319,10 +200,16 @@
       <v-card>
         <v-card-title>Corte de caja</v-card-title>
         <v-card-text>
-          <div>Continuar con esta accion provocara un corte de caja, es decir ver los resultados desde el ultimo corte de caja hasta la fecha para ver los resultados anteriores revisar los cortes de caja anteriores</div>
+          <div>
+            Continuar con esta acción provocara un corte de caja, es decir ver
+            los resultados desde el ultimo corte de caja hasta la fecha. Para
+            ver los resultados anteriores revisar los cortes de caja anteriores
+          </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" dark @click="verCorteDeCaja()">Continuar</v-btn>
+          <v-btn color="primary" dark @click="verCorteDeCaja()"
+            >Continuar</v-btn
+          >
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="dialog2 = false">Cancelar</v-btn>
         </v-card-actions>
@@ -337,8 +224,8 @@
             <v-spacer></v-spacer>
           </v-card-title>
           <v-card-text>
-            <div>Cantidad de ventas: {{cantidadDeVentas}}</div>
-            <div>Total de las ventas: ${{responseCaja.total}}</div>
+            <div>Cantidad de ventas: {{ cantidadDeVentas }}</div>
+            <div>Total de las ventas: ${{ responseCaja.total }}</div>
           </v-card-text>
           <v-card-actions>
             <v-btn color="primary" text @click="cerrar()">Cerrar</v-btn>
@@ -347,97 +234,153 @@
       </v-skeleton-loader>
     </v-dialog>
     <!--- Dialogo preventa--->
-    
-      <v-dialog v-model="dialogPreventa" max-width="300px">
-          <v-card color="white">
-            <v-toolbar color="indigo darken-4"  dark elevation="0">
-              <v-spacer />
-              <div class="h1" style="font-size: 28px !important;">
-                  Complete la compra
+
+    <v-dialog v-model="dialogPreventa" max-width="400px">
+      <v-card color="white">
+        <v-toolbar color="indigo darken-4" dark elevation="0">
+          <v-spacer />
+          <div class="h1" style="font-size: 28px !important">
+            Complete la compra
+          </div>
+          <v-spacer />
+        </v-toolbar>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" md="12" sm="12">
+              <v-list :dense="true" :nav="true">
+                <v-list-item-group color="primary">
+                  <v-list-item
+                    v-for="(item, i) in responsePreventa.productos"
+                    :key="i"
+                    :inactive="true"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title
+                        class="text-center"
+                        v-text="item[0] + ' X' + item[3] / item[4]"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle
+                        class="text-center"
+                        v-text="'$' + item[3]"
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-col>
+            <v-col cols="12" md="12" sm="12">
+              <div
+                style="border: 4px solid #1a237e; border-radius: 5px"
+                v-if="ventaEspecial"
+              >
+                <v-row
+                  v-if="responsePreventa.descuento > 0"
+                  style="width: 60%; margin-left: 20%"
+                >
+                  <h3 style="float: left">
+                    Total: $
+                    <p
+                      style="margin-left: 3px; float: right"
+                      class="text-decoration-line-through"
+                    >
+                      ${{ totalPreventa }}
+                    </p>
+                    {{
+                      (totalPreventa - responsePreventa.descuento).toFixed(2)
+                    }}
+                  </h3>
+                </v-row>
+                <v-row style="width: 36%; margin-left: 32%" v-else>
+                  <h3 style="float: left">
+                    Total: $
+                    <p style="margin-left: 3px; float: right">
+                      {{ totalPreventa }}
+                    </p>
+                  </h3>
+                </v-row>
               </div>
+              <div
+                style="border: 4px solid #1a237e; border-radius: 15px"
+                v-else
+              >
+                <v-row
+                  v-if="responsePreventa.descuento > 0"
+                  style="width: 60%; margin-left: 20%"
+                >
+                  <h3 style="float: left">
+                    Total: $
+                    <p
+                      style="margin-left: 3px; float: right"
+                      class="text-decoration-line-through"
+                    >
+                      ${{ totalPreventa }}
+                    </p>
+                    {{
+                      (totalPreventa - responsePreventa.descuento).toFixed(2)
+                    }}
+                  </h3>
+                </v-row>
+                <v-row style="width: 36%; margin-left: 32%" v-else>
+                  <h3 style="float: left">
+                    Total: $
+                    <p style="margin-left: 3px; float: right">
+                      {{ totalPreventa }}
+                    </p>
+                  </h3>
+                </v-row>
+                <v-row style="width: 48%; margin-left: 26%">
+                  <h3 style="float: left">
+                    Cambio: $
+                    <p style="margin-left: 3px; float: right">
+                      {{
+                        (
+                          pago -
+                          (totalPreventa - responsePreventa.descuento)
+                        ).toFixed(2)
+                      }}
+                    </p>
+                  </h3>
+                </v-row>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-row>
+            <v-toolbar elevation="0">
+              <v-spacer />
+              <v-btn
+                color="yellow darken-1"
+                @click="terminarVenta()"
+                depressed
+                tile
+                >Terminar venta</v-btn
+              >
               <v-spacer />
             </v-toolbar>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12" md="12" sm="12">
-                  <v-list :dense="true" :nav="true">
-                    <v-list-item-group color="primary">
-                      <v-list-item v-for="(item, i) in responsePreventa.productos" :key="i" :inactive="true">
-                        <v-list-item-content>
-                          
-                          <v-list-item-title class="text-center" v-text='item[0]+" X"+(item[3]/item[4])'></v-list-item-title>
-                          <v-list-item-subtitle class="text-center" v-text='"$"+item[3]'></v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                      
-                    </v-list-item-group>
-                    
-                  </v-list>
-                </v-col>
-                <v-col cols="12" md="12" sm="12" >
-                  <div v-if="ventaEspecial">
-                    <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
-                      <h4  style="float: left; ">
-                        Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
-                      </h4>
-                      
-                    </v-row>
-                    <v-row style="width: 36%; margin-left: 32%" v-else>
-                      <h4 style="float: left; ">
-                        Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
-                      </h4>
-                    </v-row>
-                  </div>
-                  <div v-else>
-                    <v-row v-if="responsePreventa.descuento > 0" style="width: 60%; margin-left: 20%">
-                      <h4  style="float: left; ">
-                        Total: $<p style="margin-left: 3px; float: right;" class="text-decoration-line-through">  ${{totalPreventa}}</p>{{(totalPreventa-responsePreventa.descuento).toFixed(2)}} 
-                      </h4>
-                      
-                    </v-row>
-                    <v-row style="width: 36%; margin-left: 32%" v-else>
-                      <h4 style="float: left; ">
-                        Total: $<p style="margin-left: 3px; float: right;">{{totalPreventa}}</p> 
-                      </h4>
-                    </v-row>
-                    <v-row style="width: 48%; margin-left: 26%">
-                      <h4 style="float: left; ">
-                        Cambio: $<p style="margin-left: 3px; float: right;">{{(pago-totalPreventa).toFixed(2)}}</p> 
-                      </h4>
-                    </v-row>
-                  </div>
-                  
-                </v-col>
-              </v-row>
-            </v-card-text>
-            <v-card-actions>
-              <v-row>
-                    <v-toolbar elevation="0">
-                      <v-spacer />
-                      <v-btn color="yellow darken-1" @click="terminarVenta()" depressed tile dark>Terminar venta</v-btn>
-                      <v-spacer />
-                    </v-toolbar>
-                  </v-row>
-              
-            </v-card-actions>
-          </v-card>
-      </v-dialog>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!---   Dialogo promo   ---->
     <v-dialog v-model="dialogPromo" max-width="700px">
       <v-card>
         <v-toolbar color="indigo darken-4" dark elevation="0">
           <v-spacer />
-          <div class="h1" style="font-size: 28px !important;">Promociones</div>
+          <div class="h1" style="font-size: 28px !important">Promociones</div>
           <v-spacer />
         </v-toolbar>
         <div style>
           <v-tabs vertical>
             <v-tab>
-              <v-icon color="indigo darken-4" left>mdi-brightness-percent</v-icon>Individuales
+              <v-icon color="indigo darken-4" left
+                >mdi-brightness-percent</v-icon
+              >Individuales
             </v-tab>
             <v-tab>
-              <v-icon color="indigo darken-4" left>mdi-animation</v-icon>Combinadas
+              <v-icon color="indigo darken-4" left>mdi-animation</v-icon
+              >Combinadas
             </v-tab>
             <v-tab-item>
               <v-card flat>
@@ -445,19 +388,30 @@
                   <v-row>
                     <v-col cols="6">
                       <v-select
-                          :items="nombresProductos"
-                          v-model="productoElegido"
-                          label="Nombre"
-                        ></v-select>
+                        :items="nombresProductos"
+                        v-model="productoElegido"
+                        label="Nombre"
+                      ></v-select>
                     </v-col>
                     <v-col cols="2" md="2" sm="2">
-                      <v-text-field v-model="aplica" label="aplica en:"></v-text-field>
+                      <v-text-field
+                        v-model="aplica"
+                        label="aplica en:"
+                      ></v-text-field>
                     </v-col>
-                    <v-col cols="4"  md="4" sm="4">
-                      <v-text-field v-model="descuentoI" label="descuento en pesos"></v-text-field>
+                    <v-col cols="4" md="4" sm="4">
+                      <v-text-field
+                        v-model="descuentoI"
+                        label="Precio final"
+                      ></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-btn @click="añadirPromoUno()" dark tile depressed  color="yellow darken-1">
+                  <v-btn
+                    @click="añadirPromoUno()"
+                    tile
+                    depressed
+                    color="yellow darken-1"
+                  >
                     añadir a promoción
                   </v-btn>
                 </v-card-text>
@@ -470,44 +424,78 @@
                     <v-col cols="12" md="12" sm="12">
                       <v-list :dense="true" :nav="true">
                         <v-list-item-group color="primary">
-                          <v-list-item v-for="(item, i) in productosOferta" :key="i" :inactive="true">
+                          <v-list-item
+                            v-for="(item, i) in productosOferta"
+                            :key="i"
+                            :inactive="true"
+                          >
                             <v-list-item-content>
-                              <v-list-item-title v-text="item[2]"></v-list-item-title>
-                              <v-list-item-subtitle v-text="item[1]"></v-list-item-subtitle>
+                              <v-list-item-title
+                                v-text="item[2]"
+                              ></v-list-item-title>
+                              <v-list-item-subtitle
+                                v-text="item[1]"
+                              ></v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action>
-                              <v-btn color="orange darken-1" outlined @click="eliminarPromo(i)">
-                                <v-icon color="orange darken-1" small>mdi-trash-can</v-icon>Eliminar
+                              <v-btn
+                                color="orange darken-1"
+                                outlined
+                                @click="eliminarPromo(i)"
+                              >
+                                <v-icon color="orange darken-1" small
+                                  >mdi-trash-can</v-icon
+                                >Eliminar
                               </v-btn>
                             </v-list-item-action>
                           </v-list-item>
                         </v-list-item-group>
                       </v-list>
                     </v-col>
-                    
+
                     <v-col cols="6">
                       <v-select
-                          :items="nombresProductos"
-                          v-model="productoElegido"
-                          label="Nombre"
-                        ></v-select>
+                        :items="nombresProductos"
+                        v-model="productoElegido"
+                        label="Nombre"
+                      ></v-select>
                     </v-col>
                     <v-col cols="4" md="4" sm="4">
-                      <v-text-field v-model="aplica" label="aplica en:"></v-text-field>
+                      <v-text-field
+                        v-model="aplica"
+                        label="aplica en:"
+                      ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                      <v-btn color="yellow lighten-1" block dark tile depressed @click="addPaquete()">añadir al paquete</v-btn>
+                      <v-btn
+                        color="yellow darken-1"
+                        block
+                        tile
+                        depressed
+                        @click="addPaquete()"
+                        >añadir al paquete</v-btn
+                      >
                       <v-spacer />
                     </v-toolbar>
                   </v-row>
                   <v-row>
                     <v-toolbar elevation="0">
                       <v-spacer />
-                        <v-text-field class="mt-3" v-model="descuentoI" label="descuento en pesos"></v-text-field>
-                      <v-btn color="primary" @click="añadirPromoDos()" outlined class="ml-6">añadir paquete a promoción</v-btn>
+                      <v-text-field
+                        class="mt-3"
+                        v-model="descuentoI"
+                        label="Precio final"
+                      ></v-text-field>
+                      <v-btn
+                        color="primary"
+                        @click="añadirPromoDos()"
+                        outlined
+                        class="ml-6"
+                        >añadir paquete a promoción</v-btn
+                      >
                       <v-spacer />
                     </v-toolbar>
                   </v-row>
@@ -518,6 +506,183 @@
         </div>
       </v-card>
     </v-dialog>
+
+    <!-----   dialog añadir a carrito   ------->
+
+    <v-dialog v-model="dialogAñadirACarrito" max-width="400px">
+      <v-card>
+        <v-card-title>Añadir {{ nombreProductoAñadir }} a venta</v-card-title>
+        <div class>
+          <v-flex md12 lg12 class="d-flex flex-warp justify-center">
+            <v-flex md2>
+              <v-btn color="yellow darken-1" height="56" @click="cantidad--"
+                >-</v-btn
+              >
+            </v-flex>
+            <v-flex md6>
+              <v-form>
+                <v-text-field
+                  dense
+                  filled
+                  type="number"
+                  label="Piezas:"
+                  v-model="cantidad"
+                  :rules="cantidadVentaRules"
+                ></v-text-field>
+              </v-form>
+            </v-flex>
+            <v-flex md2>
+              <v-btn
+                class="ml-1"
+                height="56"
+                color="yellow darken-1"
+                @click="cantidad++"
+                >+</v-btn
+              >
+            </v-flex>
+          </v-flex>
+        </div>
+        <v-card-actions>
+          <v-btn color="yellow darken-4" depressed tile @click="dialogAñadirACarrito = !dialogAñadirACarrito">cerrar</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="indigo darken-4"
+            dark
+            @click="añadirAVenta(indexProductoAñadir, cantidad)"
+            >Añadir producto</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-----   dialog añadir a editar   ------->
+
+    <v-dialog v-model="dialogEditar" max-width="600px">
+      <v-card>
+        <v-toolbar color="indigo darken-4" dark elevation="0">
+          <v-spacer />
+          <div class="h1" style="font-size: 28px !important">
+            Editar producto
+          </div>
+          <v-spacer />
+        </v-toolbar>
+        <div style="margin-left: 10% !important; margin-right: 10% !important">
+          <v-text-field
+            label="Nombre del producto"
+            class="rounded-lg"
+            style="padding-top: 10% !important"
+            v-model="nombreEditar"
+            :rules="inputRules"
+            dense
+            filled
+          ></v-text-field>
+          <v-flex md12 lg12 class="d-flex flex-warp">
+            <v-flex
+              md6
+              lg6
+              style="margin-left: 10% !important; margin-right: 10% !important"
+            >
+              <v-text-field
+                label="Precio venta"
+                class="rounded"
+                type="number"
+                v-model="precioVentaEditar"
+                :rules="inputRules"
+                dense
+                filled
+              ></v-text-field>
+            </v-flex>
+            <v-flex
+              md6
+              lg6
+              style="margin-left: 10% !important; margin-right: 10% !important"
+            >
+              <v-text-field
+                label="Precio compra"
+                class="rounded"
+                type="number"
+                v-model="precioCompraEditar"
+                :rules="inputRules"
+                dense
+                filled
+              ></v-text-field>
+            </v-flex>
+          </v-flex>
+          <v-text-field
+            label="Descripción"
+            class="rounded-lg"
+            v-model="descripcionEditar"
+            :rules="inputRules"
+            dense
+            filled
+          ></v-text-field>
+          <v-flex md12 lg12 class="d-flex flex-warp">
+            <v-flex
+              md6
+              lg6
+              style="margin-left: 10% !important; margin-right: 10% !important"
+            >
+              <v-text-field
+                label="Stock"
+                class="rounded"
+                type="number"
+                v-model="cantidadExistenteEditar"
+                :rules="inputRules"
+                dense
+                filled
+              ></v-text-field>
+            </v-flex>
+            <v-flex
+              md6
+              lg6
+              style="margin-left: 10% !important; margin-right: 10% !important"
+            >
+              <v-text-field
+                label="Cantidad para alerta"
+                class="rounded"
+                v-model="cantidadAlertaEditar"
+                type="number"
+                :rules="inputRules"
+                dense
+                filled
+              ></v-text-field>
+            </v-flex>
+          </v-flex>
+          <v-text-field
+            label="Codigo de barra"
+            class="rounded-lg"
+            v-model="codigoEditar"
+            :rules="inputRules"
+            dense
+            filled
+          ></v-text-field>
+          <v-flex md12 lg12>
+            <v-btn depressed dark color="yellow darken-4" @click="dialogEditar = !dialogEditar">
+              cancelar
+            </v-btn>
+
+            <v-btn
+              style="
+                margin-left: 57%;
+                margin-bottom: 5% !important;
+                margin-top: 5% !important;
+              "
+              :loading="loading"
+              dark
+              color="indigo darken-4"
+              @click="updateProduct(productoEditarID, indexProductoEditar)"
+              >Editar</v-btn
+            >
+          </v-flex>
+        </div>
+      </v-card>
+      <div class="text-center ma-2">
+        <v-snackbar v-model="snackbar" :timeout="timeout" :bottom="true">
+          {{ texto }}
+          <v-btn color="pink" text @click="snackbar = false">Cerrar</v-btn>
+        </v-snackbar>
+      </div>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -525,12 +690,9 @@
 // @ is an alias to /src
 import axios from "axios";
 
-
 export default {
   name: "Home",
-  components: {
-    
-  },
+  components: {},
   data() {
     return {
       inputRules: [(value) => !!value || "Este campo es requerido."],
@@ -546,8 +708,9 @@ export default {
       snackbar: false,
       message: "",
       response: "",
-      presi: '',
+      presi: "",
       responseCaja: "",
+      retornable: false,
       cantidad: 1,
       texto: "",
       itemsDeVenta: [],
@@ -560,9 +723,9 @@ export default {
       nombreProducto: null,
       precioVenta: null,
       precioCompra: null,
-      stock: '',
-      stockAlerta: '',
-      codigoBarra: '',
+      stock: "",
+      stockAlerta: "",
+      codigoBarra: "",
       cerveza: false,
       nombreCerveza: [
         "Modelo",
@@ -582,6 +745,7 @@ export default {
         "Cuarto",
         "Modelo 710",
         "Botella",
+        "Botella premium",
       ],
       descripcionCerveza: [
         "355ml",
@@ -594,8 +758,8 @@ export default {
         "325ml",
         "330ml",
       ],
-      nomCerveza: '',
-      desCerveza: '',
+      nomCerveza: "",
+      desCerveza: "",
       dialogPromo: false,
       productoElegido: "",
       aplica: "",
@@ -607,33 +771,69 @@ export default {
       responsePreventa: [],
       dialogPreventa: false,
       totalPreventa: 0,
-      nombreComprador: '',
+      nombreComprador: null,
       otro: false,
-      descri: '',
-      prodBuscar: '',
-      pago: 0
+      descri: "",
+      prodBuscar: "",
+      addaVenta: false,
+      pago: 0,
+      //bariables para dialog editar
+      dialogEditar: false,
+      codigoEditar: "",
+      cantidadAlertaEditar: "",
+      cantidadExistenteEditar: "",
+      descripcionEditar: "",
+      precioCompraEditar: "",
+      precioVentaEditar: "",
+      nombreEditar: "",
+      productoEditarID: "",
+      indexProductoEditar: "",
+      //variables para dialog añadirACarrito
+      dialogAñadirACarrito: false,
+      cantidadCarrito: 1,
+      productoAñadirID: "",
+      indexProductoAñadir: "",
+      nombreProductoAñadir: "",
     };
   },
   methods: {
-    buscar(){
-      
-
+    buscar() {
       axios
-        .post("http://178.128.183.223:3333/api/v1/vendedor/productos/busqueda/nombre",
-        {
-          nombre: this.prodBuscar
-        },
+        .post(
+          "http://178.128.183.223:3333/api/v1/vendedor/productos/busqueda/nombre",
+          {
+            nombre: this.prodBuscar,
+          },
           {
             headers: {
               Authorization: "Bearer " + localStorage.token,
             },
-          })
+          }
+        )
         .then((response) => {
           this.response = response.data;
           //console.log(response.data);
-          
         })
         .catch((e) => e);
+    },
+    inventario() {},
+    dialogEditarMetodo(item, index) {
+      this.codigoEditar = item.codigo;
+      this.cantidadAlertaEditar = item.cantidadAlerta;
+      this.cantidadExistenteEditar = item.cantidadExistente;
+      this.descripcionEditar = item.descripcion;
+      this.precioCompraEditar = item.precioCompra;
+      this.precioVentaEditar = item.precioVenta;
+      this.nombreEditar = item.nombre;
+      this.productoEditarID = item.id;
+      this.indexProductoEditar = index;
+      this.dialogEditar = true;
+    },
+    dialogAñadirACarritoMetodo(index, item) {
+      this.productoAñadirID = item.id;
+      this.indexProductoAñadir = index;
+      this.nombreProductoAñadir = item.nombre;
+      this.dialogAñadirACarrito = true;
     },
     addPaquete() {
       if (this.comprobarValor2()) {
@@ -665,21 +865,18 @@ export default {
       this.loading = true;
 
       axios
-        .get("http://178.128.183.223:3333/api/v1/vendedor/productos",
-        {
-            headers: {
-              Authorization: "Bearer " + localStorage.token,
-            },
-        }
-        
-        )
+        .get("http://178.128.183.223:3333/api/v1/vendedor/productos", {
+          headers: {
+            Authorization: "Bearer " + localStorage.token,
+          },
+        })
         .then((response) => {
           this.response = response.data;
           //console.log(response.data);
-          this.response.forEach(element => {
-            this.nombresProductos.push(element.nombre)
-            this.idsNombresProductos.push(element.id)
-          })
+          this.response.forEach((element) => {
+            this.nombresProductos.push(element.nombre);
+            this.idsNombresProductos.push(element.id);
+          });
           this.loading = false;
         })
         .catch((e) => e);
@@ -688,17 +885,17 @@ export default {
       this.loading = true;
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/productos",
+          "http://178.128.183.223:3333/api/v1/vendedor/productos",
           {
             nombre: this.nombreProducto,
             precioCompra: this.precioCompra,
             precioVenta: this.precioVenta,
             descripcion: this.descripcion,
-            cantidadExistente: this. stock,
+            cantidadExistente: this.stock,
             cantidadAlerta: this.stockAlerta,
             codigo: this.codigoBarra,
-            imagen: 'hola',
-     
+            imagen: "hola",
+            envases: this.retornable,
           },
           {
             headers: {
@@ -713,14 +910,16 @@ export default {
           this.enable = true;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
-          this.nombreProducto = "",
-          this.precioCompra = "",
-          this.precioVenta = "",
-          this.descripcion = "",
-          this. stock = "",
-          this.stockAlerta = "",
-          this.codigoBarra = "",
-          this.getProductos()
+          this.nombreProducto = "";
+          this.precioCompra = "";
+          this.precioVenta = "";
+          this.descripcion = "";
+          this.stock = "";
+          this.stockAlerta = "";
+          this.codigoBarra = "";
+          this.retornable = false;
+          this.cerveza = false;
+          this.getProductos();
         })
         .catch((e) => e);
     },
@@ -728,17 +927,16 @@ export default {
       this.loading = true;
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/productos",
+          "http://178.128.183.223:3333/api/v1/vendedor/productos",
           {
-            nombre: this.nomCerveza+" "+this.presi+" "+this.descri,
+            nombre: this.nomCerveza + " " + this.presi + " " + this.descri,
             precioCompra: this.precioCompra,
             precioVenta: this.precioVenta,
-            descripcion: this.nomCerveza+" "+this.presi+" "+this.descri,
-            cantidadExistente: this. stock,
+            descripcion: this.nomCerveza + " " + this.presi + " " + this.descri,
+            cantidadExistente: this.stock,
             cantidadAlerta: this.stockAlerta,
             codigo: this.codigoBarra,
-            imagen: 'hola',
-     
+            imagen: "hola",
           },
           {
             headers: {
@@ -753,23 +951,30 @@ export default {
           this.enable = true;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
-          this.getProductos()
-          
+          this.nombreProducto = "";
+          this.precioCompra = "";
+          this.nomCerveza = "";
+          this.presi = "";
+          this.descri = "";
+          this.precioVenta = "";
+          this.descripcion = "";
+          this.stock = "";
+          this.stockAlerta = "";
+          this.codigoBarra = "";
+          this.getProductos();
         })
         .catch((e) => e);
     },
-    saberId(){
+    saberId() {
       for (let index = 0; index < this.nombreCerveza.length; index++) {
-       
-        if( this.nombreCerveza[index] == this.nomCerveza){
+        if (this.nombreCerveza[index] == this.nomCerveza) {
           return index;
         }
       }
     },
-    saberIdPromo(){
+    saberIdPromo() {
       for (let index = 0; index < this.response.length; index++) {
-       
-        if(this.response[index].nombre == this.productoElegido){
+        if (this.response[index].nombre == this.productoElegido) {
           return this.response[index].id;
         }
       }
@@ -778,7 +983,7 @@ export default {
       //console.log("id:"+this.saberIdPromo()+"pe:"+this.productoElegido)
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/paquete",
+          "http://178.128.183.223:3333/api/v1/vendedor/paquete",
           {
             id: this.saberIdPromo(),
             producto: this.productoElegido,
@@ -792,21 +997,24 @@ export default {
           }
         )
         .then((response) => {
-          response
+          response;
           this.loading = false;
-          //console.log(response.data);
-          this.dialogPromo = false
+          console.log(response.data);
+          this.dialogPromo = false;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
         })
-        .catch((e) => e);
+        .catch((e) => {
+          e;
+          console.log(e);
+        });
     },
     añadirPromoDos() {
       //console.log(this.productosOferta[0][0])
       //console.log(this.descuentoI)
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/paquete/multiple",
+          "http://178.128.183.223:3333/api/v1/vendedor/paquete/multiple",
           {
             productos: JSON.stringify(this.productosOferta),
             descuento: this.descuentoI,
@@ -818,10 +1026,10 @@ export default {
           }
         )
         .then((response) => {
-          response
+          response;
           this.loading = false;
           //console.log(response.data);
-          this.dialogPromo = false
+          this.dialogPromo = false;
           this.texto = "Añadido correctamente";
           this.snackbar = true;
         })
@@ -830,7 +1038,7 @@ export default {
     comprobar() {},
     algo() {},
     añadirAVenta(index, cantidad) {
-      if (this.comprobarValor()) {
+      if (this.comprobarValor(index)) {
         var nombre = this.response[index].nombre;
         var total = (
           parseFloat(this.response[index].precioVenta) * parseFloat(cantidad)
@@ -842,82 +1050,40 @@ export default {
         item.push(total);
         item.push(this.response[index].precioVenta);
         this.itemsDeVenta.push(item);
-        this.cantidad = 0;
+        this.cantidad = 1;
+        this.dialogAñadirACarrito = false
       }
     },
     eliminarCarrito(i) {
       this.itemsDeVenta.pop(i);
     },
     comprobarValor(index) {
-      if (this.cantidad >= 1 && this.cantidad <= this.response[index].cantidadExistente  ){
+      //console.log(this.cantidad)
+      //console.log(this.response[index].cantidadExistente)
+      if (
+        this.cantidad >= 1 &&
+        this.cantidad <= this.response[index].cantidadExistente
+      ) {
         return true;
-      }else{
-        this.texto = "La cantidad debe ser igual o menor a la cantidad de existencia";
+      } else {
+        this.texto =
+          "La cantidad debe ser igual o menor a la cantidad de existencia";
         this.snackbar = true;
         return false;
       }
-      
     },
     vender() {
       //this.dateNow();
-      if(this.pago >= 0){
+      if (this.ventaEspecial) {
         this.totalPreventa = 0;
         axios
-        .post(
-          "http://178.128.183.223:3333/api/v1/vendedor/preventa",
-          {
-            //total: 10,
-            //ora: this.hora,
-            //fecha: this.dia,
-            productos: JSON.stringify(this.itemsDeVenta),
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.token,
-            },
-          }
-        )
-        .then((response) => {
-          this.responsePreventa = response.data;
-          //console.log(response)
-          this.dialogPreventa = true; 
-          response.data.productos.forEach(element =>{
-            //console.log("elemento: "+element[3])
-            this.totalPreventa = (
-              parseFloat(this.totalPreventa) + parseFloat(element[3])
-            ).toFixed(2); 
-          })
-          //this.texto = "Vendido correctamente";
-          //this.snackbar = true;
-        })
-        .catch((e) => e);
-      }else{
-        this.texto = "Indique una cantidad valida";
-        this.snackbar = true;
-      }
-        
-      
-      
-    },
-    terminarVenta() {
-      this.dateNow();
-      //console.log(this.itemsDeVenta[0])
-      //console.log(this.responsePreventa.promocionesAplicables)
-      //console.log(this.ventaEspecial)
-      if(this.ventaEspecial){
-        //console.log(this.nombreComprador)
-        if(this.nombreComprador != null){
-          axios
           .post(
-            "http://178.128.183.223:3333/api/v1/vendedor/vender",
+            "http://178.128.183.223:3333/api/v1/vendedor/preventa",
             {
               //total: 10,
-              hora: this.hora,
-              fecha: this.dia,
-              productos: this.responsePreventa.productos,
-              promocionesAplicables: this.responsePreventa.promocionesAplicables,
-              ventaExtraordinaria: this.ventaEspecial,
-              nombreComprador: this.nombreComprador,
+              //ora: this.hora,
+              //fecha: this.dia,
+              productos: JSON.stringify(this.itemsDeVenta),
             },
             {
               headers: {
@@ -926,65 +1092,145 @@ export default {
             }
           )
           .then((response) => {
-            response
+            this.responsePreventa = response.data;
+            //console.log(response)
+            this.dialogPreventa = true;
+            response.data.productos.forEach((element) => {
+              //console.log("elemento: "+element[3])
+              this.totalPreventa = (
+                parseFloat(this.totalPreventa) + parseFloat(element[3])
+              ).toFixed(2);
+            });
+            //this.texto = "Vendido correctamente";
+            //this.snackbar = true;
+          })
+          .catch((e) => e);
+      } else {
+        if (this.pago > 0) {
+          this.totalPreventa = 0;
+          axios
+            .post(
+              "http://178.128.183.223:3333/api/v1/vendedor/preventa",
+              {
+                //total: 10,
+                //ora: this.hora,
+                //fecha: this.dia,
+                productos: JSON.stringify(this.itemsDeVenta),
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + localStorage.token,
+                },
+              }
+            )
+            .then((response) => {
+              this.responsePreventa = response.data;
+              //console.log(response)
+              this.dialogPreventa = true;
+              response.data.productos.forEach((element) => {
+                //console.log("elemento: "+element[3])
+                this.totalPreventa = (
+                  parseFloat(this.totalPreventa) + parseFloat(element[3])
+                ).toFixed(2);
+              });
+              //this.texto = "Vendido correctamente";
+              //this.snackbar = true;
+            })
+            .catch((e) => e);
+        } else {
+          this.texto = "Indique una cantidad valida";
+          this.snackbar = true;
+        }
+      }
+    },
+    terminarVenta() {
+      this.dateNow();
+      //var falseF = false
+      //console.log(this.itemsDeVenta[0])
+      //console.log(this.responsePreventa.promocionesAplicables)
+      //console.log(this.ventaEspecial)
+      if (this.ventaEspecial) {
+        //console.log(this.nombreComprador)
+        if (this.nombreComprador != null) {
+          axios
+            .post(
+              "http://178.128.183.223:3333/api/v1/vendedor/vender",
+              {
+                //total: 10,
+                hora: this.hora,
+                fecha: this.dia,
+                productos: this.responsePreventa.productos,
+                promocionesAplicables: this.responsePreventa
+                  .promocionesAplicables,
+                ventaExtraordinaria: this.ventaEspecial,
+                nombreComprador: this.nombreComprador,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + localStorage.token,
+                },
+              }
+            )
+            .then((response) => {
+              response;
+              //this.responsePreventa = response.data;
+              //console.log("asdadad")
+              //console.log(response)
+              this.dialogPreventa = false;
+              this.totalPreventa = 0;
+              this.nombreComprador = "";
+              this.texto = "Venta terminada";
+              this.snackbar = true;
+              this.getProductos();
+              this.pago = 0;
+              for (let index = 0; index < this.itemsDeVenta.length; index++) {
+                this.eliminarCarrito(index);
+              }
+              this.itemsDeVenta = [];
+            })
+            .catch((e) => e);
+        } else {
+          this.texto = "Debe añadir el nombre del cliente";
+          this.snackbar = true;
+        }
+      } else {
+        axios
+          .post(
+            "http://178.128.183.223:3333/api/v1/vendedor/vender",
+            {
+              //total: 10,
+              hora: this.hora,
+              fecha: this.dia,
+              productos: this.responsePreventa.productos,
+              promocionesAplicables: this.responsePreventa
+                .promocionesAplicables,
+              ventaExtraordinaria: this.ventaEspecial,
+              nombreComprador: "SN",
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.token,
+              },
+            }
+          )
+          .then((response) => {
+            response;
             //this.responsePreventa = response.data;
             //console.log("asdadad")
             //console.log(response)
-            this.dialogPreventa = false; 
-            this.totalPreventa = 0
-            this.nombreComprador = ''
+            this.dialogPreventa = false;
+            this.totalPreventa = 0;
+            this.nombreComprador = "";
+            this.pago = 0;
             this.texto = "Venta terminada";
             this.snackbar = true;
             this.getProductos();
             for (let index = 0; index < this.itemsDeVenta.length; index++) {
               this.eliminarCarrito(index);
-              
             }
-            this.itemsDeVenta = []
+            this.itemsDeVenta = [];
           })
           .catch((e) => e);
-        }else{
-          this.texto = "Debe añadir el nombre del cliente";
-          this.snackbar = true;
-        }
-        
-      }else{
-        axios
-        .post(
-          "http://178.128.183.223:3333/api/v1/vendedor/vender",
-          {
-            //total: 10,
-            hora: this.hora,
-            fecha: this.dia,
-            productos: this.responsePreventa.productos,
-            promocionesAplicables: this.responsePreventa.promocionesAplicables,
-            ventaExtraordinaria: this.ventaEspecial,
-            nombreComprador: 'SN',
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.token,
-            },
-          }
-        )
-        .then((response) => {
-          response
-          //this.responsePreventa = response.data;
-          //console.log("asdadad")
-          //console.log(response)
-          this.dialogPreventa = false; 
-          this.totalPreventa = 0
-          this.nombreComprador = ''
-          this.texto = "Venta terminada";
-          this.snackbar = true;
-          this.getProductos();
-          for (let index = 0; index < this.itemsDeVenta.length; index++) {
-            this.eliminarCarrito(index);
-            
-          }
-          this.itemsDeVenta = []
-        })
-        .catch((e) => e);
       }
     },
     updateProduct(id, n) {
@@ -992,15 +1238,16 @@ export default {
       this.response[n].nombre;
       axios
         .put(
-          "http://178.128.183.223:3333/api/v1/administrador/productos/" + id,
+          "http://178.128.183.223:3333/api/v1/vendedor/productos/" +
+            this.productoEditarID,
           {
-            nombre: this.response[n].nombre,
-            precioCompra: this.response[n].precioCompra,
-            precioVenta: this.response[n].precioVenta,
-            descripcion: this.response[n].descripcion,
-            cantidadExistente: this.response[n].cantidadExistente,
-            cantidadAlerta: this.response[n].cantidadAlerta,
-            codigo: this.response[n].codigo,
+            nombre: this.nombreEditar,
+            precioCompra: this.precioCompraEditar,
+            precioVenta: this.precioVentaEditar,
+            descripcion: this.descripcionEditar,
+            cantidadExistente: this.cantidadExistenteEditar,
+            cantidadAlerta: this.cantidadAlertaEditar,
+            codigo: this.codigoEditar,
           },
           {
             headers: {
@@ -1009,9 +1256,10 @@ export default {
           }
         )
         .then((response) => {
-          response
+          response;
           this.loading = false;
           this.enable = true;
+          this.dialogEditar = false;
           this.texto = "Editado correctamente";
           this.snackbar = true;
           this.getPlatillos();
@@ -1026,7 +1274,7 @@ export default {
       this.dateNow();
       axios
         .post(
-          "http://178.128.183.223:3333/api/v1/administrador/corte",
+          "http://178.128.183.223:3333/api/v1/vendedor/corte",
           {
             hora: this.hora,
             fecha: this.dia,
@@ -1058,7 +1306,12 @@ export default {
       this.dialog3 = true;
       axios
         .get(
-          "http://178.128.183.223:3333/api/v1/administrador/ventas/corte-actual"
+          "http://178.128.183.223:3333/api/v1/vendedor/ventas/corte-actual",
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
         )
         .then((response) => {
           this.responseCaja = response.data[0];
@@ -1070,15 +1323,37 @@ export default {
         })
         .catch((e) => e);
     },
-    cerrarSesion(){
-      localStorage.loged = ""
-       this.$router.push('/')
-    }
+    cerrarSesion() {
+      localStorage.loged = "";
+      this.$router.push("/");
+    },
+    eliminarProducto(id) {
+      axios
+        .put(
+          "http://178.128.183.223:3333/api/v1/vendedor/productos/inhabilitar/" +
+            id,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.token,
+            },
+          }
+        )
+        .then((response) => {
+          response;
+          //console.log(response)
+          this.getProductos();
+        })
+        .catch((e) => {
+          e;
+          //console.log(e)
+        });
+    },
   },
   mounted() {
     this.getProductos();
-    if(localStorage.loged != 'user'){
-      this.$router.push('/')
+    if (localStorage.loged != "user") {
+      this.$router.push("/");
     }
   },
   computed: {

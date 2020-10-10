@@ -1,13 +1,16 @@
 <template>
   <v-container class="my-5">
     <v-btn
-        color="yellow darken-1"
-        
-        text-color="indigo darken-4"
-        tile dark
-        fab fixed top left
-        to="/ventas"
-        >Home</v-btn>  
+      color="indigo darken-4"
+      tile
+      dark
+      fab
+      fixed
+      top
+      left
+      to="/ventas"
+      >Home</v-btn
+    > 
     <v-row class="d-flex flex-wrap">
       <v-col cols="12" md="6" sm="6">
         <v-spacer></v-spacer>
@@ -48,7 +51,7 @@
             color="yellow darken-1"
             tile
             depressed
-            dark
+            
             :to="'/ventas/historial/' + todo.id"
           >
             <v-icon>mdi-magnify-plus</v-icon>
@@ -140,7 +143,7 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-btn depressed tile dark color="yellow darken-1" @click="excelFecha()">
+            <v-btn depressed tile color="yellow darken-1" @click="excelFecha()">
               <v-icon>mdi-download</v-icon> Descargar
             </v-btn>
           </v-row>

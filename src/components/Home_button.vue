@@ -4,7 +4,7 @@
         color="yellow darken-1"
         
         text-color="indigo darken-4"
-        tile dark
+        tile 
         fab fixed top left
         to="/ventas"
         >Home</v-btn> 

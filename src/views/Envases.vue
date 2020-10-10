@@ -1,8 +1,7 @@
 <template>
   <v-container class="my-5">
     <v-btn
-      color="yellow darken-1"
-      text-color="indigo darken-4"
+      color="indigo darken-4"
       tile
       dark
       fab
